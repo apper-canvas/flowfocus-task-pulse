@@ -1,0 +1,62 @@
+[
+  {
+    "id": "1",
+    "name": "Sarah Chen",
+    "email": "sarah.chen@flowfocus.com",
+    "avatar": "https://images.unsplash.com/photo-1494790108755-2616b612b5ad?w=150&h=150&fit=crop&crop=face"
+  },
+  {
+    "id": "2",
+    "name": "Marcus Rodriguez",
+    "email": "marcus.rodriguez@flowfocus.com",
+    "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
+  },
+  {
+    "id": "3",
+    "name": "Emily Thompson",
+    "email": "emily.thompson@flowfocus.com",
+    "avatar": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face"
+  },
+  {
+    "id": "4",
+    "name": "David Kim",
+    "email": "david.kim@flowfocus.com",
+    "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
+  },
+  {
+    "id": "5",
+    "name": "Jessica Park",
+    "email": "jessica.park@flowfocus.com",
+    "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face"
+  },
+  {
+    "id": "6",
+    "name": "Alex Johnson",
+    "email": "alex.johnson@flowfocus.com",
+    "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face"
+  },
+  {
+    "id": "7",
+    "name": "Maria Garcia",
+    "email": "maria.garcia@flowfocus.com",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face"
+  },
+  {
+    "id": "8",
+    "name": "Ryan O'Connor",
+    "email": "ryan.oconnor@flowfocus.com",
+    "avatar": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face"
+  },
+  {
+    "id": "9",
+    "name": "Sophie Anderson",
+    "email": "sophie.anderson@flowfocus.com",
+    "avatar": "https://images.unsplash.com/photo-1485893226505-9bffb1d4b49e?w=150&h=150&fit=crop&crop=face"
+  },
+  {
+    "id": "10",
+    "name": "James Wilson",
+    "email": "james.wilson@flowfocus.com",
+    "avatar": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face"
+  }
+]

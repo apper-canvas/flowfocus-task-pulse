@@ -1,0 +1,167 @@
+[
+  {
+    "id": 1,
+    "title": "Design new user onboarding flow",
+    "description": "Create wireframes and prototypes for the new user onboarding experience, focusing on reducing time to first value and improving user activation rates.",
+    "status": "in-progress",
+    "priority": "high",
+    "dueDate": "2024-01-15",
+    "createdAt": "2024-01-08T10:30:00Z",
+    "tags": ["design", "ux", "onboarding"],
+    "assignee": "1"
+  },
+  {
+    "id": 2,
+    "title": "Implement API rate limiting",
+    "description": "Add rate limiting middleware to protect API endpoints from abuse and ensure fair usage across all clients.",
+    "status": "to-do",
+    "priority": "high",
+    "dueDate": "2024-01-12",
+    "createdAt": "2024-01-07T14:15:00Z",
+    "tags": ["backend", "security", "api"],
+    "assignee": "2"
+  },
+  {
+    "id": 3,
+    "title": "Write unit tests for authentication module",
+    "description": "Comprehensive test coverage for user authentication, including login, logout, token refresh, and password reset functionality.",
+    "status": "done",
+    "priority": "medium",
+    "dueDate": "2024-01-10",
+    "createdAt": "2024-01-05T09:00:00Z",
+    "tags": ["testing", "auth", "backend"],
+    "assignee": "3"
+  },
+  {
+    "id": 4,
+    "title": "Update documentation for v2.0 API",
+    "description": "Revise API documentation to reflect new endpoints, updated request/response formats, and deprecation notices for v1.0.",
+    "status": "to-do",
+    "priority": "medium",
+    "dueDate": "2024-01-18",
+    "createdAt": "2024-01-06T16:45:00Z",
+    "tags": ["documentation", "api"],
+    "assignee": "4"
+  },
+  {
+    "id": 5,
+    "title": "Fix mobile responsive issues on dashboard",
+    "description": "Address layout problems on mobile devices, particularly with the sidebar navigation and chart components.",
+    "status": "in-progress",
+    "priority": "high",
+    "dueDate": "2024-01-14",
+    "createdAt": "2024-01-08T11:20:00Z",
+    "tags": ["frontend", "mobile", "bug"],
+    "assignee": "1"
+  },
+  {
+    "id": 6,
+    "title": "Set up CI/CD pipeline for staging environment",
+    "description": "Configure automated deployment pipeline for staging environment with proper testing and rollback mechanisms.",
+    "status": "to-do",
+    "priority": "medium",
+    "dueDate": "2024-01-20",
+    "createdAt": "2024-01-07T13:30:00Z",
+    "tags": ["devops", "deployment", "automation"],
+    "assignee": "2"
+  },
+  {
+    "id": 7,
+    "title": "Conduct user research interviews",
+    "description": "Schedule and conduct 10 user interviews to gather feedback on the new feature set and identify pain points.",
+    "status": "done",
+    "priority": "low",
+    "dueDate": "2024-01-09",
+    "createdAt": "2024-01-03T08:15:00Z",
+    "tags": ["research", "ux", "interviews"],
+    "assignee": "5"
+  },
+  {
+    "id": 8,
+    "title": "Optimize database queries for reports page",
+    "description": "Identify and optimize slow database queries affecting the reports page performance, targeting sub-2-second load times.",
+    "status": "to-do",
+    "priority": "high",
+    "dueDate": "2024-01-16",
+    "createdAt": "2024-01-08T15:00:00Z",
+    "tags": ["backend", "performance", "database"],
+    "assignee": "3"
+  },
+  {
+    "id": 9,
+    "title": "Create marketing landing page",
+    "description": "Design and develop a conversion-focused landing page for the upcoming product launch campaign.",
+    "status": "in-progress",
+    "priority": "medium",
+    "dueDate": "2024-01-22",
+    "createdAt": "2024-01-06T12:00:00Z",
+    "tags": ["marketing", "frontend", "design"],
+    "assignee": "4"
+  },
+  {
+    "id": 10,
+    "title": "Security audit of user data handling",
+    "description": "Comprehensive review of data collection, storage, and processing practices to ensure GDPR compliance and security best practices.",
+    "status": "to-do",
+    "priority": "high",
+    "dueDate": "2024-01-25",
+    "createdAt": "2024-01-08T17:30:00Z",
+    "tags": ["security", "compliance", "audit"],
+    "assignee": "2"
+  },
+  {
+    "id": 11,
+    "title": "Implement dark mode theme",
+    "description": "Add dark mode support across the application with proper color schemes and user preference persistence.",
+    "status": "done",
+    "priority": "low",
+    "dueDate": "2024-01-11",
+    "createdAt": "2024-01-04T10:45:00Z",
+    "tags": ["frontend", "ui", "theme"],
+    "assignee": "1"
+  },
+  {
+    "id": 12,
+    "title": "Refactor notification system",
+    "description": "Modernize the notification system architecture to support real-time updates and better user experience.",
+    "status": "to-do",
+    "priority": "medium",
+    "dueDate": "2024-01-19",
+    "createdAt": "2024-01-07T14:20:00Z",
+    "tags": ["backend", "notifications", "refactor"],
+    "assignee": "3"
+  },
+  {
+    "id": 13,
+    "title": "A/B test checkout flow variations",
+    "description": "Set up and run A/B tests for three different checkout flow designs to optimize conversion rates.",
+    "status": "in-progress",
+    "priority": "medium",
+    "dueDate": "2024-01-17",
+    "createdAt": "2024-01-08T09:30:00Z",
+    "tags": ["testing", "conversion", "ux"],
+    "assignee": "5"
+  },
+  {
+    "id": 14,
+    "title": "Migrate legacy data to new schema",
+    "description": "Plan and execute migration of historical data from legacy system to new database schema with zero downtime.",
+    "status": "to-do",
+    "priority": "high",
+    "dueDate": "2024-01-21",
+    "createdAt": "2024-01-08T16:15:00Z",
+    "tags": ["migration", "database", "backend"],
+    "assignee": "2"
+  },
+  {
+    "id": 15,
+    "title": "Launch beta testing program",
+    "description": "Coordinate beta testing program with selected users, including feedback collection and bug reporting workflows.",
+    "status": "done",
+    "priority": "medium",
+    "dueDate": "2024-01-08",
+    "createdAt": "2024-01-02T11:00:00Z",
+    "tags": ["testing", "beta", "community"],
+    "assignee": "4"
+  }
+]
