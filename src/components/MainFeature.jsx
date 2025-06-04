@@ -393,11 +393,10 @@ export default function MainFeature({
                   <p className="text-surface-500 text-sm">No tasks in {column.title.toLowerCase()}</p>
                 </motion.div>
               )}
-            </div>
+</div>
           </motion.div>
         ))}
       </div>
-
       {/* Task Creation Modal */}
       <AnimatePresence>
         {showTaskModal && (
