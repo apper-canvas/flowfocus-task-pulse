@@ -126,13 +126,12 @@ const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
     )
   }
 
-  return (
-    <div className={`min-h-screen ${darkMode ? 'dark' : ''}`}>
-      <div className="min-h-screen bg-gradient-to-br from-surface-50 via-white to-primary-50/30 dark:from-surface-900 dark:via-surface-800 dark:to-primary-900/10">
-        
+return (
+    <div className="min-h-screen bg-gradient-to-br from-surface-50 to-surface-100 dark:from-surface-900 dark:to-surface-800">
+      <div className="relative">
         {/* Header */}
-        <motion.header 
-          className="fixed top-0 left-0 right-0 z-40 h-16 bg-white/80 dark:bg-surface-800/80 backdrop-blur-md border-b border-surface-200/50 dark:border-surface-700/50"
+        <motion.header
+          className="fixed top-0 left-0 right-0 z-40 bg-white/80 dark:bg-surface-800/80 backdrop-blur-md border-b border-surface-200/50 dark:border-surface-700/50 h-16"
           initial={{ y: -64 }}
           animate={{ y: 0 }}
           transition={{ duration: 0.3 }}
@@ -154,9 +153,9 @@ const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
                   FlowFocus
                 </h1>
               </div>
-            </div>
+</div>
 
-<div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-3">
               {/* Search */}
               <div className="relative hidden md:block">
                 <ApperIcon name="Search" className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-surface-400" />
@@ -228,11 +227,11 @@ const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
               <div className="w-8 h-8 bg-gradient-to-br from-secondary to-secondary-dark rounded-full flex items-center justify-center">
                 <ApperIcon name="User" className="w-4 h-4 text-white" />
               </div>
-            </div>
+</div>
           </div>
         </motion.header>
 
-{/* Enhanced Mobile Search */}
+        {/* Enhanced Mobile Search */}
         <div className="fixed top-16 left-0 right-0 z-30 p-4 bg-white/80 dark:bg-surface-800/80 backdrop-blur-md border-b border-surface-200/50 dark:border-surface-700/50 md:hidden">
           <div className="relative">
             <ApperIcon name="Search" className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-surface-400" />
@@ -277,9 +276,9 @@ const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
                 {/* Filters */}
                 <div>
                   <h3 className="text-sm font-semibold text-surface-700 dark:text-surface-300 mb-3 uppercase tracking-wider">
-                    Filters
+Filters
                   </h3>
-<div className="space-y-3">
+                  <div className="space-y-3">
                     <div>
                       <label className="block text-sm text-surface-600 dark:text-surface-400 mb-1">Status</label>
                       <select
@@ -380,13 +379,13 @@ const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
                     </div>
                   </div>
                 </div>
-              </div>
+</div>
             </motion.aside>
-)}
+          )}
         </AnimatePresence>
 
         {/* Main Content */}
-<main className={`pt-16 md:pt-32 lg:pt-16 transition-all duration-300 ${sidebarCollapsed ? 'lg:ml-0' : 'lg:ml-64'}`}>
+        <main className={`pt-16 md:pt-32 lg:pt-16 transition-all duration-300 ${sidebarCollapsed ? 'lg:ml-0' : 'lg:ml-64'}`}>
           <div className="p-4 lg:p-6 max-w-7xl mx-auto">
             <MainFeature
               tasks={filteredTasks}
