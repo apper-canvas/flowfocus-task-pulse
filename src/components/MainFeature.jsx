@@ -478,30 +478,31 @@ const sortTasks = (tasksToSort) => {
                             </div>
                           ) : (
                             <span className="text-sm text-surface-400">Unassigned</span>
-                          )}
+)}
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex items-center justify-end space-x-2">
                             <button
                               onClick={(e) => {
                                 e.stopPropagation()
-handleTaskClick(task)
-                            }}
-                            className="p-2 rounded-lg hover:bg-surface-100 transition-colors"
-                            title="Edit task"
-                          >
-                            <ApperIcon name="Edit" className="w-4 h-4 text-surface-500" />
-                          </button>
-                          <button
-onClick={(e) => {
-                              e.stopPropagation()
-                              onDeleteTask(task.id)
-                            }}
-                            className="p-2 rounded-lg hover:bg-error/10 transition-colors"
-                            title="Delete task"
+                                handleTaskClick(task)
+                              }}
+                              className="p-2 rounded-lg hover:bg-surface-100 transition-colors"
+                              title="Edit task"
+                            >
+                              <ApperIcon name="Edit" className="w-4 h-4 text-surface-500" />
+                            </button>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                onDeleteTask(task.id)
+                              }}
+                              className="p-2 rounded-lg hover:bg-error/10 transition-colors"
+                              title="Delete task"
                             >
                               <ApperIcon name="Trash2" className="w-4 h-4 text-error" />
                             </button>
+                          </div>
                         </td>
                       </motion.tr>
                     )
@@ -510,9 +511,9 @@ onClick={(e) => {
               </tbody>
             </table>
             
-            {/* Empty State */}
+{/* Empty State */}
             {(!tasks || tasks.length === 0) && (
-<div className="text-center py-12">
+              <div className="text-center py-12">
                 <div className="w-16 h-16 mx-auto mb-4 bg-surface-100 rounded-full flex items-center justify-center">
                   <ApperIcon name="Table" className="w-8 h-8 text-surface-400" />
                 </div>
@@ -528,7 +529,7 @@ onClick={(e) => {
 // List View (commented out since listView prop is not available)
   // if (typeof listView !== 'undefined' && listView) {
   //   const sortedTasks = sortTasks(tasks || [])
-//   return (
+  //   return (
   //     <div className="space-y-6">
   //       {/* Welcome Section */}
   //       <motion.div 
@@ -539,8 +540,9 @@ onClick={(e) => {
   //       >
   //         <div className="flex flex-col md:flex-row md:items-center justify-between space-y-4 md:space-y-0">
   //           <div>
-<h2 className="text-2xl md:text-3xl font-bold text-surface-800 mb-2">
-                Task List View
+  //             <h2 className="text-2xl md:text-3xl font-bold text-surface-800 mb-2">
+  //               Task List View
+Task List View
               </h2>
               <p className="text-surface-600 text-lg">
                 Simple and clean task overview. Focus on what matters most. ✨
@@ -616,10 +618,10 @@ onClick={(e) => {
               <span className="text-surface-400">•</span>
               <span className="font-medium text-surface-700">
                 {sortDirection === 'asc' ? 'Ascending' : 'Descending'}
-              </span>
+</span>
             </div>
           </div>
-</motion.div>
+        </motion.div>
 
         {/* Task List */}
         <motion.div
@@ -630,11 +632,12 @@ onClick={(e) => {
         >
           <AnimatePresence>
             {/* Task list would go here if listView was implemented */}
-</AnimatePresence>
+          </AnimatePresence>
         </motion.div>
       </div>
     )
   }
+
   if (calendarView) {
     return (
       <div className="space-y-6">
@@ -1096,9 +1099,9 @@ handleTaskClick(task)
               </AnimatePresence>
 
               {/* Empty State */}
-              {getTasksByStatus(column.id).length === 0 && (
+{getTasksByStatus(column.id).length === 0 && (
                 <motion.div 
-className="text-center py-8"
+                  className="text-center py-8"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.5 }}
