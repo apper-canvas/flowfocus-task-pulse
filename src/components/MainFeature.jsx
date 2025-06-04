@@ -11,9 +11,9 @@ export default function MainFeature({
   onCreateTask, 
   onUpdateTask, 
   onDeleteTask, 
-  showTaskModal, 
+showTaskModal, 
   setShowTaskModal,
-calendarView,
+  calendarView,
   tableView
 }) {
   const [draggedTask, setDraggedTask] = useState(null)
@@ -23,9 +23,9 @@ calendarView,
   const [sortField, setSortField] = useState('title')
   const [sortDirection, setSortDirection] = useState('asc')
   const [taskForm, setTaskForm] = useState({
-    title: '',
+title: '',
     description: '',
-priority: 'medium',
+    priority: 'medium',
     dueDate: '',
     tags: [],
     assignee: ''
@@ -145,19 +145,18 @@ priority: 'medium',
     setTaskForm(prev => ({
       ...prev,
       tags: prev.tags.filter(tag => tag !== tagToRemove)
-    }))
+}))
   }
-const handleTaskClick = (task) => {
+
+  const handleTaskClick = (task) => {
     setSelectedTask(task)
     setShowDetailPanel(true)
   }
 
   const handleToggleComplete = (task) => {
     const newStatus = task.status === 'done' ? 'to-do' : 'done'
-    const newStatus = task.status === 'done' ? 'to-do' : 'done'
     onUpdateTask(task.id, { status: newStatus })
   }
-
   const getTasksForDate = (date) => {
     return tasks?.filter(task => {
       if (!task?.dueDate) return false
@@ -184,20 +183,20 @@ const handleTaskClick = (task) => {
         )
       }
     }
-    return null
+return null
   }
 
   const handleDateClick = (date) => {
     setSelectedDate(date)
-const tasksForDate = getTasksForDate(date)
+    const tasksForDate = getTasksForDate(date)
     if (tasksForDate.length > 0) {
       setShowDateTasks(true)
+setShowDateTasks(true)
     }
   }
 
   const handleSort = (field) => {
     if (sortField === field) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
     } else {
       setSortField(field)
       setSortDirection('asc')
@@ -685,12 +684,12 @@ const tasksForDate = getTasksForDate(date)
                   </div>
                 </motion.div>
               </motion.div>
-            </>
+</>
           )}
         </AnimatePresence>
       </div>
     )
-}
+  }
 
   return (
     <div className="space-y-6">
@@ -923,10 +922,10 @@ const tasksForDate = getTasksForDate(date)
               {/* Empty State */}
               {getTasksByStatus(column.id).length === 0 && (
                 <motion.div 
-                  className="text-center py-8"
+className="text-center py-8"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-transition={{ delay: 0.5 }}
+                  transition={{ delay: 0.5 }}
                 >
                   <div className="w-16 h-16 mx-auto mb-4 bg-surface-100 rounded-full flex items-center justify-center">
                     <ApperIcon name={column.icon} className="w-8 h-8 text-surface-400" />
