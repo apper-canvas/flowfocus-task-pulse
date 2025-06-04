@@ -169,16 +169,15 @@ const handleRemoveTag = (tagToRemove) => {
       if (tasksForDate.length > 0) {
         return (
           <div className="calendar-task-indicators">
-            {tasksForDate.slice(0, 3).map((task, index) => (
+{tasksForDate.slice(0, 3).map((task, index) => (
               <div
                 key={index}
                 className={`calendar-task-dot ${task.priority || 'medium'}`}
               />
             ))}
             {tasksForDate.length > 3 && (
-{tasksForDate.length > 3 && (
               <div className="calendar-task-dot high" />
-            )}
+)}
           </div>
         )
       }
@@ -497,10 +496,10 @@ const sortTasks = (tasksToSort) => {
                               onClick={(e) => {
                                 e.stopPropagation()
                                 onDeleteTask(task.id)
-                              }}
+}}
                               className="p-2 rounded-lg hover:bg-error/10 transition-colors"
                               title="Delete task"
->
+                            >
                               <ApperIcon name="Trash2" className="w-4 h-4 text-error" />
                             </button>
                           </div>
@@ -676,10 +675,10 @@ const sortTasks = (tasksToSort) => {
                                   </span>
                                 </div>
                               )}
-                            </div>
+</div>
                           </div>
                         )
-})}
+                      })}
                     </div>
                   </div>
                 </motion.div>
@@ -719,10 +718,10 @@ const sortTasks = (tasksToSort) => {
             </div>
             <div className="bg-white rounded-xl p-4 shadow-card border border-surface-200/50">
               <div className="text-center">
-                <div className="text-2xl font-bold text-accent">{tasks?.filter(t => t?.status === 'in-progress').length || 0}</div>
+<div className="text-2xl font-bold text-accent">{tasks?.filter(t => t?.status === 'in-progress').length || 0}</div>
                 <div className="text-sm text-surface-600">In Progress</div>
               </div>
-</div>
+            </div>
           </div>
         </div>
       </motion.div>
@@ -785,10 +784,10 @@ const sortTasks = (tasksToSort) => {
             </span>
             <span className="text-surface-400">•</span>
             <span className="font-medium text-surface-700">
-              {sortDirection === 'asc' ? 'Ascending' : 'Descending'}
+{sortDirection === 'asc' ? 'Ascending' : 'Descending'}
             </span>
           </div>
-</div>
+        </div>
       </motion.div>
 
       {/* Kanban Board */}
@@ -837,10 +836,10 @@ const sortTasks = (tasksToSort) => {
                   {getTasksByStatus(column.id).length}
                 </div>
               </div>
-            </div>
+</div>
 
             {/* Tasks */}
-<div className="p-4 md:p-6 space-y-3 min-h-[300px] max-h-[600px] overflow-y-auto scrollbar-hide">
+            <div className="p-4 md:p-6 space-y-3 min-h-[300px] max-h-[600px] overflow-y-auto scrollbar-hide">
               <AnimatePresence>
                 {sortTasks(getTasksByStatus(column.id)).map((task, taskIndex) => {
                   const dueInfo = formatDueDate(task?.dueDate)
@@ -977,10 +976,10 @@ const sortTasks = (tasksToSort) => {
                         >
                           <ApperIcon name="Trash2" className="w-3 h-3 text-error" />
                         </button>
-                      </div>
+</div>
                     </motion.div>
                   )
-})}
+                })}
               </AnimatePresence>
 
               {/* Empty State */}
@@ -994,10 +993,10 @@ const sortTasks = (tasksToSort) => {
                   <div className="w-16 h-16 mx-auto mb-4 bg-surface-100 rounded-full flex items-center justify-center">
                     <ApperIcon name={column.icon} className="w-8 h-8 text-surface-400" />
                   </div>
-                  <p className="text-surface-500 text-sm">No tasks in {column.title.toLowerCase()}</p>
+<p className="text-surface-500 text-sm">No tasks in {column.title.toLowerCase()}</p>
                 </motion.div>
               )}
-</div>
+            </div>
           </motion.div>
         ))}
       </div>
