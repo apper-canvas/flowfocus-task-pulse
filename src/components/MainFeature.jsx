@@ -520,11 +520,9 @@ const sortTasks = (tasksToSort) => {
                 <p className="text-surface-500">No tasks found</p>
               </div>
             )}
-          </div>
+</div>
         </motion.div>
       </div>
-    )
-</div>
     )
   }
 
