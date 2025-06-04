@@ -193,18 +193,35 @@ className="pl-10 pr-4 py-2 w-64 lg:w-80 bg-surface-100/50 dark:bg-surface-700/50
           </div>
         </motion.header>
 
-        {/* Mobile Search */}
+{/* Enhanced Mobile Search */}
         <div className="fixed top-16 left-0 right-0 z-30 p-4 bg-white/80 dark:bg-surface-800/80 backdrop-blur-md border-b border-surface-200/50 dark:border-surface-700/50 md:hidden">
           <div className="relative">
             <ApperIcon name="Search" className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-surface-400" />
             <input
               type="text"
-              placeholder="Search tasks..."
+              placeholder="Search tasks, try tag:frontend, priority:high..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 pr-4 py-2 w-full bg-surface-100/50 dark:bg-surface-700/50 border border-surface-200 dark:border-surface-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+              className={`pl-10 py-2 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all ${
+                searchQuery 
+                  ? 'pr-10 bg-white dark:bg-surface-800 border-primary/50 shadow-card' 
+                  : 'pr-4 bg-surface-100/50 dark:bg-surface-700/50 border-surface-200 dark:border-surface-600'
+              }`}
             />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-surface-400 hover:text-surface-600 transition-colors"
+              >
+                <ApperIcon name="X" className="w-4 h-4" />
+              </button>
+            )}
           </div>
+          {searchQuery && (
+            <div className="mt-2 text-xs text-surface-500">
+              {filteredTasks.length} task{filteredTasks.length !== 1 ? 's' : ''} found
+            </div>
+          )}
         </div>
 
         {/* Sidebar */}
