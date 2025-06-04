@@ -176,13 +176,13 @@ const handleRemoveTag = (tagToRemove) => {
               />
             ))}
             {tasksForDate.length > 3 && (
+{tasksForDate.length > 3 && (
               <div className="calendar-task-dot high" />
             )}
           </div>
-)
+        )
       }
     }
-    return null
   }
 
   const handleDateClick = (date) => {
@@ -220,6 +220,10 @@ const sortTasks = (tasksToSort) => {
         case 'dueDate':
           aValue = a?.dueDate ? new Date(a.dueDate).getTime() : 0
           bValue = b?.dueDate ? new Date(b.dueDate).getTime() : 0
+          break
+        case 'createdAt':
+          aValue = a?.createdAt ? new Date(a.createdAt).getTime() : 0
+          bValue = b?.createdAt ? new Date(b.createdAt).getTime() : 0
           break
         case 'assignee':
           const userA = users?.find(u => u?.id === a?.assignee)
@@ -496,10 +500,10 @@ const sortTasks = (tasksToSort) => {
                               }}
                               className="p-2 rounded-lg hover:bg-error/10 transition-colors"
                               title="Delete task"
-                            >
+>
                               <ApperIcon name="Trash2" className="w-4 h-4 text-error" />
-</button>
-</div>
+                            </button>
+                          </div>
                         </td>
                       </motion.tr>
                     )
@@ -675,10 +679,10 @@ const sortTasks = (tasksToSort) => {
                             </div>
                           </div>
                         )
-                      })}
+})}
                     </div>
                   </div>
-</motion.div>
+                </motion.div>
               </motion.div>
             </>
           )}
@@ -718,13 +722,77 @@ const sortTasks = (tasksToSort) => {
                 <div className="text-2xl font-bold text-accent">{tasks?.filter(t => t?.status === 'in-progress').length || 0}</div>
                 <div className="text-sm text-surface-600">In Progress</div>
               </div>
-            </div>
+</div>
           </div>
         </div>
       </motion.div>
 
+      {/* Sorting Controls */}
+      <motion.div
+        className="bg-white rounded-xl p-4 md:p-6 shadow-soft border border-surface-200/50"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+      >
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between space-y-4 sm:space-y-0">
+          <div className="flex items-center space-x-4">
+            <h3 className="text-lg font-semibold text-surface-800">Sort Tasks</h3>
+            <div className="flex items-center space-x-3">
+              <div className="relative">
+                <select
+                  value={sortField}
+                  onChange={(e) => setSortField(e.target.value)}
+                  className="appearance-none bg-surface-50 border border-surface-200 rounded-lg px-4 py-2 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                >
+                  <option value="title">Alphabetical (Title)</option>
+                  <option value="priority">Priority</option>
+                  <option value="dueDate">Due Date</option>
+                  <option value="createdAt">Creation Date</option>
+                  <option value="status">Status</option>
+                  <option value="assignee">Assignee</option>
+                </select>
+                <ApperIcon 
+                  name="ChevronDown" 
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-surface-400 pointer-events-none" 
+                />
+              </div>
+              
+              <button
+                onClick={() => setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')}
+                className="flex items-center space-x-2 px-3 py-2 bg-surface-50 hover:bg-surface-100 border border-surface-200 rounded-lg transition-colors"
+                title={`Sort ${sortDirection === 'asc' ? 'Descending' : 'Ascending'}`}
+              >
+                <ApperIcon 
+                  name={sortDirection === 'asc' ? 'ArrowUp' : 'ArrowDown'} 
+                  className="w-4 h-4 text-surface-600" 
+                />
+                <span className="text-sm text-surface-600">
+                  {sortDirection === 'asc' ? 'Asc' : 'Desc'}
+                </span>
+              </button>
+            </div>
+          </div>
+          
+          <div className="flex items-center space-x-2 text-sm text-surface-600">
+            <span>Sorting by:</span>
+            <span className="font-medium text-primary">
+              {sortField === 'title' ? 'Alphabetical' :
+               sortField === 'priority' ? 'Priority' :
+               sortField === 'dueDate' ? 'Due Date' :
+               sortField === 'createdAt' ? 'Creation Date' :
+               sortField === 'status' ? 'Status' :
+               'Assignee'}
+            </span>
+            <span className="text-surface-400">•</span>
+            <span className="font-medium text-surface-700">
+              {sortDirection === 'asc' ? 'Ascending' : 'Descending'}
+            </span>
+          </div>
+</div>
+      </motion.div>
+
       {/* Kanban Board */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {columns.map((column, columnIndex) => (
           <motion.div
             key={column.id}
@@ -912,9 +980,10 @@ const sortTasks = (tasksToSort) => {
                       </div>
                     </motion.div>
                   )
-                })}
+})}
               </AnimatePresence>
-{/* Empty State */}
+
+              {/* Empty State */}
               {getTasksByStatus(column.id).length === 0 && (
                 <motion.div 
                   className="text-center py-8"
@@ -928,10 +997,11 @@ const sortTasks = (tasksToSort) => {
                   <p className="text-surface-500 text-sm">No tasks in {column.title.toLowerCase()}</p>
                 </motion.div>
               )}
-            </div>
+</div>
           </motion.div>
         ))}
       </div>
+
       {/* Task Creation Modal */}
       <AnimatePresence>
         {showTaskModal && (
