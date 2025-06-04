@@ -141,13 +141,12 @@ title: '',
     }
   }
 
-  const handleRemoveTag = (tagToRemove) => {
+const handleRemoveTag = (tagToRemove) => {
     setTaskForm(prev => ({
       ...prev,
       tags: prev.tags.filter(tag => tag !== tagToRemove)
-}))
+    }))
   }
-
   const handleTaskClick = (task) => {
     setSelectedTask(task)
     setShowDetailPanel(true)
@@ -180,10 +179,10 @@ title: '',
               <div className="calendar-task-dot high" />
             )}
           </div>
-        )
+)
       }
     }
-return null
+    return null
   }
 
   const handleDateClick = (date) => {
@@ -191,20 +190,20 @@ return null
     const tasksForDate = getTasksForDate(date)
     if (tasksForDate.length > 0) {
       setShowDateTasks(true)
-setShowDateTasks(true)
     }
   }
 
   const handleSort = (field) => {
     if (sortField === field) {
-    } else {
-      setSortField(field)
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+setSortField(field)
       setSortDirection('asc')
     }
   }
 
   const sortTasks = (tasksToSort) => {
     return [...tasksToSort].sort((a, b) => {
+      let aValue, bValue
       let aValue, bValue
       
       switch (sortField) {
@@ -502,10 +501,10 @@ setShowDateTasks(true)
                               title="Delete task"
                             >
                               <ApperIcon name="Trash2" className="w-4 h-4 text-error" />
-                            </button>
+</button>
                           </div>
                         </td>
-                      </tr>
+                      </motion.tr>
                     )
                   })}
                 </AnimatePresence>
@@ -682,9 +681,9 @@ setShowDateTasks(true)
                       })}
                     </div>
                   </div>
-                </motion.div>
+</motion.div>
               </motion.div>
-</>
+            </>
           )}
         </AnimatePresence>
       </div>
@@ -919,10 +918,10 @@ setShowDateTasks(true)
                 })}
               </AnimatePresence>
 
-              {/* Empty State */}
+{/* Empty State */}
               {getTasksByStatus(column.id).length === 0 && (
                 <motion.div 
-className="text-center py-8"
+                  className="text-center py-8"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.5 }}
