@@ -535,14 +535,13 @@ const sortTasks = (tasksToSort) => {
   //       <motion.div 
   //         className="bg-gradient-to-r from-primary/5 via-white to-secondary/5 rounded-2xl p-6 md:p-8 border border-surface-200/50 shadow-soft"
   //         initial={{ opacity: 0, y: 20 }}
-  //         animate={{ opacity: 1, y: 0 }}
-  //         transition={{ duration: 0.5 }}
+//         transition={{ duration: 0.5 }}
   //       >
   //         <div className="flex flex-col md:flex-row md:items-center justify-between space-y-4 md:space-y-0">
   //           <div>
-  //             <h2 className="text-2xl md:text-3xl font-bold text-surface-800 mb-2">
-  //               Task List View
-Task List View
+            <div>
+              <h2 className="text-2xl md:text-3xl font-bold text-surface-800 mb-2">
+                Task List View
               </h2>
               <p className="text-surface-600 text-lg">
                 Simple and clean task overview. Focus on what matters most. ✨
