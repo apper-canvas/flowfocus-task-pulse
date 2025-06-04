@@ -170,22 +170,23 @@ const getTileContent = ({ date, view }) => {
       if (tasksForDate.length > 0) {
         return (
           <div className="calendar-task-indicators">
-            {tasksForDate.slice(0, 3).map((task, index) => (
+            {tasksForDate.slice(0, 4).map((task, index) => (
               <div
-                key={index}
+                key={`${task.id}-${index}`}
                 className={`calendar-task-dot ${task.priority || 'medium'}`}
-                title={`${task.title} - ${task.priority || 'medium'} priority`}
+                title={`${task.title || 'Untitled'} - ${task.priority || 'medium'} priority`}
               />
             ))}
-            {tasksForDate.length > 3 && (
+            {tasksForDate.length > 4 && (
               <div className="calendar-task-overflow">
-                +{tasksForDate.length - 3}
+                +{tasksForDate.length - 4}
               </div>
             )}
           </div>
         )
       }
     }
+    return null
   }
 
   const handleDateClick = (date) => {
