@@ -493,16 +493,16 @@ const sortTasks = (tasksToSort) => {
                               <ApperIcon name="Edit" className="w-4 h-4 text-surface-500" />
                             </button>
                             <button
+<button
                               onClick={(e) => {
                                 e.stopPropagation()
                                 onDeleteTask(task.id)
-}}
+                              }}
                               className="p-2 rounded-lg hover:bg-error/10 transition-colors"
                               title="Delete task"
                             >
                               <ApperIcon name="Trash2" className="w-4 h-4 text-error" />
                             </button>
-                          </div>
                         </td>
                       </motion.tr>
                     )
@@ -518,22 +518,22 @@ const sortTasks = (tasksToSort) => {
                   <ApperIcon name="Table" className="w-8 h-8 text-surface-400" />
                 </div>
                 <p className="text-surface-500">No tasks found</p>
-              </div>
+</div>
             )}
           </div>
         </motion.div>
       </div>
     )
-)
-}
+  }
 
-  // List View (commented out since listView prop is not available)
+// List View (commented out since listView prop is not available)
   // if (typeof listView !== 'undefined' && listView) {
   //   const sortedTasks = sortTasks(tasks || [])
-      <div className="space-y-6">
-        {/* Welcome Section */}
-        <motion.div 
-          className="bg-gradient-to-r from-primary/5 via-white to-secondary/5 rounded-2xl p-6 md:p-8 border border-surface-200/50 shadow-soft"
+  //   return (
+  //     <div className="space-y-6">
+  //       {/* Welcome Section */}
+  //       <motion.div 
+  //         className="bg-gradient-to-r from-primary/5 via-white to-secondary/5 rounded-2xl p-6 md:p-8 border border-surface-200/50 shadow-soft"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -627,13 +627,13 @@ const sortTasks = (tasksToSort) => {
           className="space-y-3"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <AnimatePresence>
-            {sortedTasks.map((task, index) => {
-              const dueInfo = formatDueDate(task?.dueDate)
-              const priority = priorityConfig[task?.priority || 'medium']
-              const assignedUser = users?.find(u => u?.id === task?.assignee)
+//       transition={{ duration: 0.5, delay: 0.2 }}
+  //     >
+  //       <AnimatePresence>
+  //         {sortedTasks.map((task, index) => {
+  //           const dueInfo = formatDueDate(task?.dueDate)
+  //           const priority = priorityConfig[task?.priority || 'medium']
+  //           const assignedUser = users?.find(u => u?.id === task?.assignee)
               
               return (
                 <motion.div
@@ -809,12 +809,12 @@ const sortTasks = (tasksToSort) => {
                 <ApperIcon name="List" className="w-10 h-10 text-surface-400" />
               </div>
               <h3 className="text-xl font-semibold text-surface-800 mb-2">No tasks found</h3>
-              <p className="text-surface-500">Create your first task to get started!</p>
-            </motion.div>
-          )}
-</motion.div>
-      </div>
-    )
+//           <p className="text-surface-500">Create your first task to get started!</p>
+  //         </motion.div>
+  //       )}
+  //     </motion.div>
+  //   </div>
+  // )
   // }
 
   if (calendarView) {
@@ -851,10 +851,10 @@ const sortTasks = (tasksToSort) => {
         <motion.div
           className="bg-white rounded-xl p-6 shadow-soft border border-surface-200/50"
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-<div className="calendar-container">
+          <div className="calendar-container">
             <Calendar
               onChange={handleDateClick}
               value={selectedDate}
@@ -967,10 +967,11 @@ const sortTasks = (tasksToSort) => {
                                 <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center ml-4">
                                   <span className="text-white text-xs font-medium">
                                     {assignedUser.name?.charAt(0) || 'U'}
+{assignedUser.name?.charAt(0) || 'U'}
                                   </span>
                                 </div>
                               )}
-</div>
+                            </div>
                           </div>
                         )
                       })}
@@ -1010,10 +1011,10 @@ const sortTasks = (tasksToSort) => {
                 <div className="text-2xl font-bold text-primary">{tasks?.filter(t => t?.status === 'done').length || 0}</div>
                 <div className="text-sm text-surface-600">Completed</div>
               </div>
-            </div>
+</div>
             <div className="bg-white rounded-xl p-4 shadow-card border border-surface-200/50">
               <div className="text-center">
-<div className="text-2xl font-bold text-accent">{tasks?.filter(t => t?.status === 'in-progress').length || 0}</div>
+                <div className="text-2xl font-bold text-accent">{tasks?.filter(t => t?.status === 'in-progress').length || 0}</div>
                 <div className="text-sm text-surface-600">In Progress</div>
               </div>
             </div>
@@ -1076,10 +1077,10 @@ const sortTasks = (tasksToSort) => {
                sortField === 'createdAt' ? 'Creation Date' :
                sortField === 'status' ? 'Status' :
                'Assignee'}
-            </span>
+</span>
             <span className="text-surface-400">•</span>
             <span className="font-medium text-surface-700">
-{sortDirection === 'asc' ? 'Ascending' : 'Descending'}
+              {sortDirection === 'asc' ? 'Ascending' : 'Descending'}
             </span>
           </div>
         </div>
@@ -1128,10 +1129,10 @@ const sortTasks = (tasksToSort) => {
                   column.color === 'accent' ? 'bg-accent/10 text-accent' :
                   'bg-secondary/10 text-secondary'
                 }`}>
-                  {getTasksByStatus(column.id).length}
+{getTasksByStatus(column.id).length}
                 </div>
               </div>
-</div>
+            </div>
 
             {/* Tasks */}
             <div className="p-4 md:p-6 space-y-3 min-h-[300px] max-h-[600px] overflow-y-auto scrollbar-hide">
@@ -1268,10 +1269,11 @@ const sortTasks = (tasksToSort) => {
                             onDeleteTask(task.id)
                           }}
                           className="p-1 rounded hover:bg-error/10 transition-colors"
+className="p-1 rounded hover:bg-error/10 transition-colors"
                         >
                           <ApperIcon name="Trash2" className="w-3 h-3 text-error" />
                         </button>
-</div>
+                      </div>
                     </motion.div>
                   )
                 })}
@@ -1285,10 +1287,10 @@ const sortTasks = (tasksToSort) => {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.5 }}
                 >
-                  <div className="w-16 h-16 mx-auto mb-4 bg-surface-100 rounded-full flex items-center justify-center">
+<div className="w-16 h-16 mx-auto mb-4 bg-surface-100 rounded-full flex items-center justify-center">
                     <ApperIcon name={column.icon} className="w-8 h-8 text-surface-400" />
                   </div>
-<p className="text-surface-500 text-sm">No tasks in {column.title.toLowerCase()}</p>
+                  <p className="text-surface-500 text-sm">No tasks in {column.title.toLowerCase()}</p>
                 </motion.div>
               )}
             </div>
