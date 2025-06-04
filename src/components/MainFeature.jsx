@@ -565,17 +565,16 @@ const sortTasks = (tasksToSort) => {
         >
           <div className="calendar-container">
             <Calendar
-              onChange={handleDateClick}
+onChange={handleDateClick}
               value={selectedDate}
               tileContent={getTileContent}
-              className="w-full"
+              className="w-full block"
               locale="en-US"
               showNeighboringMonth={false}
               prev2Label={null}
               next2Label={null}
             />
           </div>
-          
           {/* Legend */}
           <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-sm">
             <div className="flex items-center space-x-2">
