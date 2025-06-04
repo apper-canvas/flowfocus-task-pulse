@@ -524,6 +524,298 @@ const sortTasks = (tasksToSort) => {
         </motion.div>
       </div>
     )
+}
+
+  // List View
+  if (typeof listView !== 'undefined' && listView) {
+    const sortedTasks = sortTasks(tasks || [])
+    
+    return (
+      <div className="space-y-6">
+        {/* Welcome Section */}
+        <motion.div 
+          className="bg-gradient-to-r from-primary/5 via-white to-secondary/5 rounded-2xl p-6 md:p-8 border border-surface-200/50 shadow-soft"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="flex flex-col md:flex-row md:items-center justify-between space-y-4 md:space-y-0">
+            <div>
+              <h2 className="text-2xl md:text-3xl font-bold text-surface-800 mb-2">
+                Task List View
+              </h2>
+              <p className="text-surface-600 text-lg">
+                Simple and clean task overview. Focus on what matters most. ✨
+              </p>
+            </div>
+            <div className="flex items-center space-x-4">
+              <div className="bg-white rounded-xl p-4 shadow-card border border-surface-200/50">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-primary">{tasks?.length || 0}</div>
+                  <div className="text-sm text-surface-600">Total Tasks</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Sorting Controls */}
+        <motion.div
+          className="bg-white rounded-xl p-4 md:p-6 shadow-soft border border-surface-200/50"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between space-y-4 sm:space-y-0">
+            <div className="flex items-center space-x-4">
+              <h3 className="text-lg font-semibold text-surface-800">Sort Tasks</h3>
+              <div className="flex items-center space-x-3">
+                <div className="relative">
+                  <select
+                    value={sortField}
+                    onChange={(e) => setSortField(e.target.value)}
+                    className="appearance-none bg-surface-50 border border-surface-200 rounded-lg px-4 py-2 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                  >
+                    <option value="title">Alphabetical (Title)</option>
+                    <option value="priority">Priority</option>
+                    <option value="dueDate">Due Date</option>
+                    <option value="createdAt">Creation Date</option>
+                    <option value="status">Status</option>
+                    <option value="assignee">Assignee</option>
+                  </select>
+                  <ApperIcon 
+                    name="ChevronDown" 
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-surface-400 pointer-events-none" 
+                  />
+                </div>
+                
+                <button
+                  onClick={() => setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')}
+                  className="flex items-center space-x-2 px-3 py-2 bg-surface-50 hover:bg-surface-100 border border-surface-200 rounded-lg transition-colors"
+                  title={`Sort ${sortDirection === 'asc' ? 'Descending' : 'Ascending'}`}
+                >
+                  <ApperIcon 
+                    name={sortDirection === 'asc' ? 'ArrowUp' : 'ArrowDown'} 
+                    className="w-4 h-4 text-surface-600" 
+                  />
+                  <span className="text-sm text-surface-600">
+                    {sortDirection === 'asc' ? 'Asc' : 'Desc'}
+                  </span>
+                </button>
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-2 text-sm text-surface-600">
+              <span>Sorting by:</span>
+              <span className="font-medium text-primary">
+                {sortField === 'title' ? 'Alphabetical' :
+                 sortField === 'priority' ? 'Priority' :
+                 sortField === 'dueDate' ? 'Due Date' :
+                 sortField === 'createdAt' ? 'Creation Date' :
+                 sortField === 'status' ? 'Status' :
+                 'Assignee'}
+              </span>
+              <span className="text-surface-400">•</span>
+              <span className="font-medium text-surface-700">
+                {sortDirection === 'asc' ? 'Ascending' : 'Descending'}
+              </span>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Task List */}
+        <motion.div
+          className="space-y-3"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <AnimatePresence>
+            {sortedTasks.map((task, index) => {
+              const dueInfo = formatDueDate(task?.dueDate)
+              const priority = priorityConfig[task?.priority || 'medium']
+              const assignedUser = users?.find(u => u?.id === task?.assignee)
+              
+              return (
+                <motion.div
+                  key={task?.id}
+                  layout
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.2, delay: index * 0.03 }}
+                  className={`group bg-white border-l-4 rounded-xl p-4 md:p-6 shadow-soft hover:shadow-task-hover transition-all duration-200 cursor-pointer ${
+                    priority.color === 'error' ? 'border-l-error' :
+                    priority.color === 'accent' ? 'border-l-accent' :
+                    'border-l-secondary'
+                  }`}
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, task)}
+                  onDragEnd={handleDragEnd}
+                  onClick={() => handleTaskClick(task)}
+                >
+                  <div className="flex items-start space-x-4">
+                    {/* Completion Checkbox */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleToggleComplete(task)
+                      }}
+                      className={`mt-1 w-6 h-6 rounded border-2 flex items-center justify-center transition-all ${
+                        task?.status === 'done'
+                          ? 'bg-secondary border-secondary text-white'
+                          : 'border-surface-300 hover:border-primary'
+                      }`}
+                    >
+                      {task?.status === 'done' && (
+                        <ApperIcon name="Check" className="w-4 h-4" />
+                      )}
+                    </button>
+
+                    {/* Task Content */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between mb-2">
+                        <h4 className={`text-lg font-semibold text-surface-800 ${
+                          task?.status === 'done' ? 'line-through opacity-60' : ''
+                        }`}>
+                          {task?.title || 'Untitled Task'}
+                        </h4>
+                        
+                        {/* Priority Indicator */}
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center ml-4 ${
+                          priority.color === 'error' ? 'bg-error/10' :
+                          priority.color === 'accent' ? 'bg-accent/10' :
+                          'bg-secondary/10'
+                        }`}>
+                          <ApperIcon 
+                            name={priority.icon} 
+                            className={`w-4 h-4 ${
+                              priority.color === 'error' ? 'text-error' :
+                              priority.color === 'accent' ? 'text-accent' :
+                              'text-secondary'
+                            }`} 
+                          />
+                        </div>
+                      </div>
+
+                      {/* Description */}
+                      {task?.description && (
+                        <p className="text-surface-600 mb-3 line-clamp-2">
+                          {task.description}
+                        </p>
+                      )}
+
+                      {/* Task Meta Information */}
+                      <div className="flex flex-wrap items-center gap-3 text-sm">
+                        {/* Status Badge */}
+                        <span className={`px-3 py-1 rounded-full font-medium ${
+                          task?.status === 'done' ? 'bg-secondary/10 text-secondary' :
+                          task?.status === 'in-progress' ? 'bg-accent/10 text-accent' :
+                          'bg-surface-100 text-surface-600'
+                        }`}>
+                          {task?.status?.replace('-', ' ') || 'To Do'}
+                        </span>
+
+                        {/* Due Date */}
+                        {dueInfo && (
+                          <span className={`px-3 py-1 rounded-full ${
+                            dueInfo.overdue ? 'bg-error/10 text-error' :
+                            dueInfo.urgent ? 'bg-accent/10 text-accent' :
+                            'bg-surface-100 text-surface-600'
+                          }`}>
+                            📅 {dueInfo.text}
+                          </span>
+                        )}
+
+                        {/* Priority Label */}
+                        <span className={`px-3 py-1 rounded-full ${
+                          priority.color === 'error' ? 'bg-error/10 text-error' :
+                          priority.color === 'accent' ? 'bg-accent/10 text-accent' :
+                          'bg-secondary/10 text-secondary'
+                        }`}>
+                          {priority.label}
+                        </span>
+
+                        {/* Assignee */}
+                        {assignedUser && (
+                          <div className="flex items-center space-x-2">
+                            <div className="w-6 h-6 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
+                              <span className="text-white text-xs font-medium">
+                                {assignedUser.name?.charAt(0) || 'U'}
+                              </span>
+                            </div>
+                            <span className="text-surface-700">{assignedUser.name}</span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Tags */}
+                      {task?.tags?.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mt-3">
+                          {task.tags.slice(0, 4).map(tag => (
+                            <span
+                              key={tag}
+                              className="px-2 py-1 bg-primary/10 text-primary rounded-full text-xs"
+                            >
+                              #{tag}
+                            </span>
+                          ))}
+                          {task.tags.length > 4 && (
+                            <span className="px-2 py-1 bg-surface-100 text-surface-600 rounded-full text-xs">
+                              +{task.tags.length - 4} more
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Quick Actions */}
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center space-x-2">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleTaskClick(task)
+                        }}
+                        className="p-2 rounded-lg hover:bg-surface-100 transition-colors"
+                        title="Edit task"
+                      >
+                        <ApperIcon name="Edit" className="w-4 h-4 text-surface-500" />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          onDeleteTask(task.id)
+                        }}
+                        className="p-2 rounded-lg hover:bg-error/10 transition-colors"
+                        title="Delete task"
+                      >
+                        <ApperIcon name="Trash2" className="w-4 h-4 text-error" />
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              )
+            })}
+          </AnimatePresence>
+
+          {/* Empty State */}
+          {(!tasks || tasks.length === 0) && (
+            <motion.div 
+              className="text-center py-16 bg-white rounded-xl shadow-soft border border-surface-200/50"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              <div className="w-20 h-20 mx-auto mb-6 bg-surface-100 rounded-full flex items-center justify-center">
+                <ApperIcon name="List" className="w-10 h-10 text-surface-400" />
+              </div>
+              <h3 className="text-xl font-semibold text-surface-800 mb-2">No tasks found</h3>
+              <p className="text-surface-500">Create your first task to get started!</p>
+            </motion.div>
+          )}
+        </motion.div>
+      </div>
+    )
   }
 
   if (calendarView) {
