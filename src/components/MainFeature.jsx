@@ -13,9 +13,10 @@ export default function MainFeature({
   onDeleteTask, 
 showTaskModal, 
   setShowTaskModal,
-  calendarView,
-  tableView
+  viewMode = 'kanban'
 }) {
+  const calendarView = viewMode === 'calendar'
+  const tableView = viewMode === 'table'
   const [draggedTask, setDraggedTask] = useState(null)
   const [dragOverColumn, setDragOverColumn] = useState(null)
   const [selectedTask, setSelectedTask] = useState(null)
