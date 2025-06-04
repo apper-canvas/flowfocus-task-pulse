@@ -772,9 +772,9 @@ const sortTasks = (tasksToSort) => {
             </div>
 
             {/* Tasks */}
-            <div className="p-4 md:p-6 space-y-3 min-h-[300px] max-h-[600px] overflow-y-auto scrollbar-hide">
+<div className="p-4 md:p-6 space-y-3 min-h-[300px] max-h-[600px] overflow-y-auto scrollbar-hide">
               <AnimatePresence>
-                {getTasksByStatus(column.id).map((task, taskIndex) => {
+                {sortTasks(getTasksByStatus(column.id)).map((task, taskIndex) => {
                   const dueInfo = formatDueDate(task?.dueDate)
                   const priority = priorityConfig[task?.priority || 'medium']
                   const assignedUser = users?.find(u => u?.id === task?.assignee)

@@ -13,13 +13,14 @@ export default function Home() {
   const [projects, setProjects] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-  const [searchQuery, setSearchQuery] = useState("")
+const [searchQuery, setSearchQuery] = useState("")
   const [filterStatus, setFilterStatus] = useState("all")
   const [filterPriority, setFilterPriority] = useState("all")
+  const [filterDueDate, setFilterDueDate] = useState("all")
+  const [filterTag, setFilterTag] = useState("all")
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [darkMode, setDarkMode] = useState(false)
   const [showTaskModal, setShowTaskModal] = useState(false)
-
   useEffect(() => {
     const loadData = async () => {
       setLoading(true)
@@ -222,7 +223,7 @@ className="pl-10 pr-4 py-2 w-64 lg:w-80 bg-surface-100/50 dark:bg-surface-700/50
                   <h3 className="text-sm font-semibold text-surface-700 dark:text-surface-300 mb-3 uppercase tracking-wider">
                     Filters
                   </h3>
-                  <div className="space-y-3">
+<div className="space-y-3">
                     <div>
                       <label className="block text-sm text-surface-600 dark:text-surface-400 mb-1">Status</label>
                       <select
@@ -247,6 +248,40 @@ className="pl-10 pr-4 py-2 w-64 lg:w-80 bg-surface-100/50 dark:bg-surface-700/50
                         <option value="high">High</option>
                         <option value="medium">Medium</option>
                         <option value="low">Low</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm text-surface-600 dark:text-surface-400 mb-1">Due Date</label>
+                      <select
+                        value={filterDueDate}
+                        onChange={(e) => setFilterDueDate(e.target.value)}
+                        className="w-full p-2 bg-surface-100/50 dark:bg-surface-700/50 border border-surface-200 dark:border-surface-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      >
+                        <option value="all">All Due Dates</option>
+                        <option value="today">Due Today</option>
+                        <option value="tomorrow">Due Tomorrow</option>
+                        <option value="next7days">Next 7 Days</option>
+                        <option value="overdue">Overdue</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm text-surface-600 dark:text-surface-400 mb-1">Tag</label>
+                      <select
+                        value={filterTag}
+                        onChange={(e) => setFilterTag(e.target.value)}
+                        className="w-full p-2 bg-surface-100/50 dark:bg-surface-700/50 border border-surface-200 dark:border-surface-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      >
+                        <option value="all">All Tags</option>
+                        <option value="frontend">Frontend</option>
+                        <option value="backend">Backend</option>
+                        <option value="design">Design</option>
+                        <option value="testing">Testing</option>
+                        <option value="ux">UX</option>
+                        <option value="api">API</option>
+                        <option value="security">Security</option>
+                        <option value="performance">Performance</option>
+                        <option value="mobile">Mobile</option>
+                        <option value="documentation">Documentation</option>
                       </select>
                     </div>
                   </div>
