@@ -13,19 +13,22 @@ export default function MainFeature({
   onDeleteTask, 
   showTaskModal, 
   setShowTaskModal,
-  calendarView 
+calendarView,
+  tableView
 }) {
   const [draggedTask, setDraggedTask] = useState(null)
   const [dragOverColumn, setDragOverColumn] = useState(null)
   const [selectedTask, setSelectedTask] = useState(null)
   const [showDetailPanel, setShowDetailPanel] = useState(false)
+  const [sortField, setSortField] = useState('title')
+  const [sortDirection, setSortDirection] = useState('asc')
   const [taskForm, setTaskForm] = useState({
     title: '',
     description: '',
-    priority: 'medium',
+priority: 'medium',
     dueDate: '',
     tags: [],
-assignee: ''
+    assignee: ''
   })
   const [newTag, setNewTag] = useState('')
   const [selectedDate, setSelectedDate] = useState(new Date())
@@ -144,13 +147,13 @@ assignee: ''
       tags: prev.tags.filter(tag => tag !== tagToRemove)
     }))
   }
-
-  const handleTaskClick = (task) => {
+const handleTaskClick = (task) => {
     setSelectedTask(task)
-setShowDetailPanel(true)
+    setShowDetailPanel(true)
   }
 
   const handleToggleComplete = (task) => {
+    const newStatus = task.status === 'done' ? 'to-do' : 'done'
     const newStatus = task.status === 'done' ? 'to-do' : 'done'
     onUpdateTask(task.id, { status: newStatus })
   }
@@ -186,10 +189,343 @@ setShowDetailPanel(true)
 
   const handleDateClick = (date) => {
     setSelectedDate(date)
-    const tasksForDate = getTasksForDate(date)
+const tasksForDate = getTasksForDate(date)
     if (tasksForDate.length > 0) {
       setShowDateTasks(true)
     }
+  }
+
+  const handleSort = (field) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+    } else {
+      setSortField(field)
+      setSortDirection('asc')
+    }
+  }
+
+  const sortTasks = (tasksToSort) => {
+    return [...tasksToSort].sort((a, b) => {
+      let aValue, bValue
+      
+      switch (sortField) {
+        case 'title':
+          aValue = (a?.title || '').toLowerCase()
+          bValue = (b?.title || '').toLowerCase()
+          break
+        case 'status':
+          aValue = a?.status || ''
+          bValue = b?.status || ''
+          break
+        case 'priority':
+          const priorityOrder = { high: 3, medium: 2, low: 1 }
+          aValue = priorityOrder[a?.priority || 'medium']
+          bValue = priorityOrder[b?.priority || 'medium']
+          break
+        case 'dueDate':
+          aValue = a?.dueDate ? new Date(a.dueDate).getTime() : 0
+          bValue = b?.dueDate ? new Date(b.dueDate).getTime() : 0
+          break
+        case 'assignee':
+          const userA = users?.find(u => u?.id === a?.assignee)
+          const userB = users?.find(u => u?.id === b?.assignee)
+          aValue = (userA?.name || '').toLowerCase()
+          bValue = (userB?.name || '').toLowerCase()
+          break
+        default:
+          return 0
+      }
+      
+      if (sortDirection === 'asc') {
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0
+      } else {
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0
+      }
+    })
+  }
+
+  if (tableView) {
+    const sortedTasks = sortTasks(tasks || [])
+    
+    return (
+      <div className="space-y-6">
+        {/* Welcome Section */}
+        <motion.div 
+          className="bg-gradient-to-r from-primary/5 via-white to-secondary/5 rounded-2xl p-6 md:p-8 border border-surface-200/50 shadow-soft"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="flex flex-col md:flex-row md:items-center justify-between space-y-4 md:space-y-0">
+            <div>
+              <h2 className="text-2xl md:text-3xl font-bold text-surface-800 mb-2">
+                Task Table View
+              </h2>
+              <p className="text-surface-600 text-lg">
+                Manage your tasks in a structured table format. Click column headers to sort. 📊
+              </p>
+            </div>
+            <div className="flex items-center space-x-4">
+              <div className="bg-white rounded-xl p-4 shadow-card border border-surface-200/50">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-primary">{tasks?.length || 0}</div>
+                  <div className="text-sm text-surface-600">Total Tasks</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Table */}
+        <motion.div
+          className="bg-white rounded-xl shadow-soft border border-surface-200/50 overflow-hidden"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-surface-50 border-b border-surface-200">
+                <tr>
+                  <th className="px-6 py-4 text-left">
+                    <button
+                      onClick={() => handleSort('title')}
+                      className="flex items-center space-x-2 text-sm font-semibold text-surface-700 hover:text-primary transition-colors"
+                    >
+                      <span>Task</span>
+                      {sortField === 'title' && (
+                        <ApperIcon 
+                          name={sortDirection === 'asc' ? 'ChevronUp' : 'ChevronDown'} 
+                          className="w-4 h-4" 
+                        />
+                      )}
+                    </button>
+                  </th>
+                  <th className="px-6 py-4 text-left">
+                    <button
+                      onClick={() => handleSort('status')}
+                      className="flex items-center space-x-2 text-sm font-semibold text-surface-700 hover:text-primary transition-colors"
+                    >
+                      <span>Status</span>
+                      {sortField === 'status' && (
+                        <ApperIcon 
+                          name={sortDirection === 'asc' ? 'ChevronUp' : 'ChevronDown'} 
+                          className="w-4 h-4" 
+                        />
+                      )}
+                    </button>
+                  </th>
+                  <th className="px-6 py-4 text-left">
+                    <button
+                      onClick={() => handleSort('priority')}
+                      className="flex items-center space-x-2 text-sm font-semibold text-surface-700 hover:text-primary transition-colors"
+                    >
+                      <span>Priority</span>
+                      {sortField === 'priority' && (
+                        <ApperIcon 
+                          name={sortDirection === 'asc' ? 'ChevronUp' : 'ChevronDown'} 
+                          className="w-4 h-4" 
+                        />
+                      )}
+                    </button>
+                  </th>
+                  <th className="px-6 py-4 text-left">
+                    <button
+                      onClick={() => handleSort('dueDate')}
+                      className="flex items-center space-x-2 text-sm font-semibold text-surface-700 hover:text-primary transition-colors"
+                    >
+                      <span>Due Date</span>
+                      {sortField === 'dueDate' && (
+                        <ApperIcon 
+                          name={sortDirection === 'asc' ? 'ChevronUp' : 'ChevronDown'} 
+                          className="w-4 h-4" 
+                        />
+                      )}
+                    </button>
+                  </th>
+                  <th className="px-6 py-4 text-left">
+                    <button
+                      onClick={() => handleSort('assignee')}
+                      className="flex items-center space-x-2 text-sm font-semibold text-surface-700 hover:text-primary transition-colors"
+                    >
+                      <span>Assignee</span>
+                      {sortField === 'assignee' && (
+                        <ApperIcon 
+                          name={sortDirection === 'asc' ? 'ChevronUp' : 'ChevronDown'} 
+                          className="w-4 h-4" 
+                        />
+                      )}
+                    </button>
+                  </th>
+                  <th className="px-6 py-4 text-right">
+                    <span className="text-sm font-semibold text-surface-700">Actions</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-surface-200">
+                <AnimatePresence>
+                  {sortedTasks.map((task, index) => {
+                    const dueInfo = formatDueDate(task?.dueDate)
+                    const priority = priorityConfig[task?.priority || 'medium']
+                    const assignedUser = users?.find(u => u?.id === task?.assignee)
+                    
+                    return (
+                      <motion.tr
+                        key={task?.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.2, delay: index * 0.05 }}
+                        className="hover:bg-surface-50 transition-colors cursor-pointer"
+                        onClick={() => handleTaskClick(task)}
+                      >
+                        <td className="px-6 py-4">
+                          <div className="flex items-start space-x-3">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                handleToggleComplete(task)
+                              }}
+                              className={`mt-1 w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
+                                task?.status === 'done'
+                                  ? 'bg-secondary border-secondary text-white'
+                                  : 'border-surface-300 hover:border-primary'
+                              }`}
+                            >
+                              {task?.status === 'done' && (
+                                <ApperIcon name="Check" className="w-3 h-3" />
+                              )}
+                            </button>
+                            <div className="min-w-0 flex-1">
+                              <h4 className={`font-medium text-surface-800 ${
+                                task?.status === 'done' ? 'line-through opacity-60' : ''
+                              }`}>
+                                {task?.title || 'Untitled Task'}
+                              </h4>
+                              {task?.description && (
+                                <p className="text-sm text-surface-600 mt-1 line-clamp-2">
+                                  {task.description}
+                                </p>
+                              )}
+                              {task?.tags?.length > 0 && (
+                                <div className="flex flex-wrap gap-1 mt-2">
+                                  {task.tags.slice(0, 2).map(tag => (
+                                    <span
+                                      key={tag}
+                                      className="px-2 py-1 bg-primary/10 text-primary rounded-full text-xs"
+                                    >
+                                      {tag}
+                                    </span>
+                                  ))}
+                                  {task.tags.length > 2 && (
+                                    <span className="px-2 py-1 bg-surface-100 text-surface-600 rounded-full text-xs">
+                                      +{task.tags.length - 2}
+                                    </span>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                            task?.status === 'done' ? 'bg-secondary/10 text-secondary' :
+                            task?.status === 'in-progress' ? 'bg-accent/10 text-accent' :
+                            'bg-surface-100 text-surface-600'
+                          }`}>
+                            {task?.status?.replace('-', ' ') || 'To Do'}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center space-x-2">
+                            <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                              priority.color === 'error' ? 'bg-error/10' :
+                              priority.color === 'accent' ? 'bg-accent/10' :
+                              'bg-secondary/10'
+                            }`}>
+                              <ApperIcon 
+                                name={priority.icon} 
+                                className={`w-3 h-3 ${
+                                  priority.color === 'error' ? 'text-error' :
+                                  priority.color === 'accent' ? 'text-accent' :
+                                  'text-secondary'
+                                }`} 
+                              />
+                            </div>
+                            <span className="text-sm text-surface-700">{priority.label}</span>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          {dueInfo ? (
+                            <span className={`px-2 py-1 rounded-full text-sm ${
+                              dueInfo.overdue ? 'bg-error/10 text-error' :
+                              dueInfo.urgent ? 'bg-accent/10 text-accent' :
+                              'bg-surface-100 text-surface-600'
+                            }`}>
+                              {dueInfo.text}
+                            </span>
+                          ) : (
+                            <span className="text-sm text-surface-400">No due date</span>
+                          )}
+                        </td>
+                        <td className="px-6 py-4">
+                          {assignedUser ? (
+                            <div className="flex items-center space-x-2">
+                              <div className="w-6 h-6 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
+                                <span className="text-white text-xs font-medium">
+                                  {assignedUser.name?.charAt(0) || 'U'}
+                                </span>
+                              </div>
+                              <span className="text-sm text-surface-700">{assignedUser.name}</span>
+                            </div>
+                          ) : (
+                            <span className="text-sm text-surface-400">Unassigned</span>
+                          )}
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center justify-end space-x-2">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                handleTaskClick(task)
+                              }}
+                              className="p-2 rounded-lg hover:bg-surface-100 transition-colors"
+                              title="Edit task"
+                            >
+                              <ApperIcon name="Edit" className="w-4 h-4 text-surface-500" />
+                            </button>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                onDeleteTask(task.id)
+                              }}
+                              className="p-2 rounded-lg hover:bg-error/10 transition-colors"
+                              title="Delete task"
+                            >
+                              <ApperIcon name="Trash2" className="w-4 h-4 text-error" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </AnimatePresence>
+              </tbody>
+            </table>
+            
+            {/* Empty State */}
+            {(!tasks || tasks.length === 0) && (
+              <div className="text-center py-12">
+                <div className="w-16 h-16 mx-auto mb-4 bg-surface-100 rounded-full flex items-center justify-center">
+                  <ApperIcon name="Table" className="w-8 h-8 text-surface-400" />
+                </div>
+                <p className="text-surface-500">No tasks found</p>
+              </div>
+            )}
+          </div>
+        </motion.div>
+      </div>
+    )
   }
 
   if (calendarView) {
@@ -590,10 +926,10 @@ setShowDetailPanel(true)
                   className="text-center py-8"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5 }}
+transition={{ delay: 0.5 }}
                 >
                   <div className="w-16 h-16 mx-auto mb-4 bg-surface-100 rounded-full flex items-center justify-center">
-<ApperIcon name={column.icon} className="w-8 h-8 text-surface-400" />
+                    <ApperIcon name={column.icon} className="w-8 h-8 text-surface-400" />
                   </div>
                   <p className="text-surface-500 text-sm">No tasks in {column.title.toLowerCase()}</p>
                 </motion.div>
