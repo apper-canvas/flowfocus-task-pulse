@@ -487,14 +487,13 @@ const sortTasks = (tasksToSort) => {
                                 e.stopPropagation()
                                 handleTaskClick(task)
                               }}
-                              className="p-2 rounded-lg hover:bg-surface-100 transition-colors"
-                              title="Edit task"
+title="Edit task"
                             >
                               <ApperIcon name="Edit" className="w-4 h-4 text-surface-500" />
                             </button>
                             <button
-<button
                               onClick={(e) => {
+                                e.stopPropagation()
                                 e.stopPropagation()
                                 onDeleteTask(task.id)
                               }}
@@ -515,10 +514,10 @@ const sortTasks = (tasksToSort) => {
             {(!tasks || tasks.length === 0) && (
               <div className="text-center py-12">
                 <div className="w-16 h-16 mx-auto mb-4 bg-surface-100 rounded-full flex items-center justify-center">
-                  <ApperIcon name="Table" className="w-8 h-8 text-surface-400" />
+<ApperIcon name="Table" className="w-8 h-8 text-surface-400" />
                 </div>
                 <p className="text-surface-500">No tasks found</p>
-</div>
+              </div>
             )}
           </div>
         </motion.div>
@@ -529,20 +528,19 @@ const sortTasks = (tasksToSort) => {
 // List View (commented out since listView prop is not available)
   // if (typeof listView !== 'undefined' && listView) {
   //   const sortedTasks = sortTasks(tasks || [])
-  //   return (
+//   return (
   //     <div className="space-y-6">
   //       {/* Welcome Section */}
   //       <motion.div 
   //         className="bg-gradient-to-r from-primary/5 via-white to-secondary/5 rounded-2xl p-6 md:p-8 border border-surface-200/50 shadow-soft"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="flex flex-col md:flex-row md:items-center justify-between space-y-4 md:space-y-0">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-surface-800 mb-2">
-                Task List View
-              </h2>
+  //         initial={{ opacity: 0, y: 20 }}
+  //         animate={{ opacity: 1, y: 0 }}
+  //         transition={{ duration: 0.5 }}
+  //       >
+  //         <div className="flex flex-col md:flex-row md:items-center justify-between space-y-4 md:space-y-0">
+  //           <div>
+  //             <h2 className="text-2xl md:text-3xl font-bold text-surface-800 mb-2">
+  //               Task List View
               <p className="text-surface-600 text-lg">
                 Simple and clean task overview. Focus on what matters most. ✨
               </p>
@@ -622,18 +620,20 @@ const sortTasks = (tasksToSort) => {
           </div>
         </motion.div>
 
-        {/* Task List */}
+{/* Task List */}
         <motion.div
           className="space-y-3"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-//       transition={{ duration: 0.5, delay: 0.2 }}
-  //     >
-  //       <AnimatePresence>
-  //         {sortedTasks.map((task, index) => {
-  //           const dueInfo = formatDueDate(task?.dueDate)
-  //           const priority = priorityConfig[task?.priority || 'medium']
-  //           const assignedUser = users?.find(u => u?.id === task?.assignee)
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <AnimatePresence>
+            {/* {sortedTasks.map((task, index) => {
+               const dueInfo = formatDueDate(task?.dueDate)
+               const priority = priorityConfig[task?.priority || 'medium']
+               const assignedUser = users?.find(u => u?.id === task?.assignee)
               
               return (
                 <motion.div
@@ -804,15 +804,18 @@ const sortTasks = (tasksToSort) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
-            >
+>
               <div className="w-20 h-20 mx-auto mb-6 bg-surface-100 rounded-full flex items-center justify-center">
                 <ApperIcon name="List" className="w-10 h-10 text-surface-400" />
               </div>
               <h3 className="text-xl font-semibold text-surface-800 mb-2">No tasks found</h3>
-//           <p className="text-surface-500">Create your first task to get started!</p>
-  //         </motion.div>
-  //       )}
-  //     </motion.div>
+              <p className="text-surface-500">Create your first task to get started!</p>
+            </motion.div>
+          )}
+        </motion.div>
+      </div>
+    )
+  }
   //   </div>
   // )
   // }
@@ -848,10 +851,10 @@ const sortTasks = (tasksToSort) => {
         </motion.div>
 
         {/* Calendar */}
-        <motion.div
+<motion.div
           className="bg-white rounded-xl p-6 shadow-soft border border-surface-200/50"
           initial={{ opacity: 0, y: 20 }}
-animate={{ opacity: 1, y: 0 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
           <div className="calendar-container">
@@ -962,12 +965,11 @@ animate={{ opacity: 1, y: 0 }}
                                     {priority.label}
                                   </span>
                                 </div>
-                              </div>
+</div>
                               {assignedUser && (
                                 <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center ml-4">
                                   <span className="text-white text-xs font-medium">
                                     {assignedUser.name?.charAt(0) || 'U'}
-{assignedUser.name?.charAt(0) || 'U'}
                                   </span>
                                 </div>
                               )}
@@ -1008,10 +1010,10 @@ animate={{ opacity: 1, y: 0 }}
           <div className="flex items-center space-x-4">
             <div className="bg-white rounded-xl p-4 shadow-card border border-surface-200/50">
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary">{tasks?.filter(t => t?.status === 'done').length || 0}</div>
+<div className="text-2xl font-bold text-primary">{tasks?.filter(t => t?.status === 'done').length || 0}</div>
                 <div className="text-sm text-surface-600">Completed</div>
               </div>
-</div>
+            </div>
             <div className="bg-white rounded-xl p-4 shadow-card border border-surface-200/50">
               <div className="text-center">
                 <div className="text-2xl font-bold text-accent">{tasks?.filter(t => t?.status === 'in-progress').length || 0}</div>
@@ -1074,10 +1076,10 @@ animate={{ opacity: 1, y: 0 }}
               {sortField === 'title' ? 'Alphabetical' :
                sortField === 'priority' ? 'Priority' :
                sortField === 'dueDate' ? 'Due Date' :
-               sortField === 'createdAt' ? 'Creation Date' :
+sortField === 'createdAt' ? 'Creation Date' :
                sortField === 'status' ? 'Status' :
                'Assignee'}
-</span>
+            </span>
             <span className="text-surface-400">•</span>
             <span className="font-medium text-surface-700">
               {sortDirection === 'asc' ? 'Ascending' : 'Descending'}
@@ -1126,10 +1128,10 @@ animate={{ opacity: 1, y: 0 }}
                 </div>
                 <div className={`px-2 py-1 rounded-full text-xs font-medium ${
                   column.color === 'surface' ? 'bg-surface-100 text-surface-700' :
-                  column.color === 'accent' ? 'bg-accent/10 text-accent' :
+column.color === 'accent' ? 'bg-accent/10 text-accent' :
                   'bg-secondary/10 text-secondary'
                 }`}>
-{getTasksByStatus(column.id).length}
+                  {getTasksByStatus(column.id).length}
                 </div>
               </div>
             </div>
@@ -1264,12 +1266,11 @@ animate={{ opacity: 1, y: 0 }}
                           <ApperIcon name="Edit" className="w-3 h-3 text-surface-500" />
                         </button>
                         <button
-                          onClick={(e) => {
+onClick={(e) => {
                             e.stopPropagation()
                             onDeleteTask(task.id)
                           }}
                           className="p-1 rounded hover:bg-error/10 transition-colors"
-className="p-1 rounded hover:bg-error/10 transition-colors"
                         >
                           <ApperIcon name="Trash2" className="w-3 h-3 text-error" />
                         </button>
@@ -1284,10 +1285,10 @@ className="p-1 rounded hover:bg-error/10 transition-colors"
                 <motion.div 
                   className="text-center py-8"
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+animate={{ opacity: 1 }}
                   transition={{ delay: 0.5 }}
                 >
-<div className="w-16 h-16 mx-auto mb-4 bg-surface-100 rounded-full flex items-center justify-center">
+                  <div className="w-16 h-16 mx-auto mb-4 bg-surface-100 rounded-full flex items-center justify-center">
                     <ApperIcon name={column.icon} className="w-8 h-8 text-surface-400" />
                   </div>
                   <p className="text-surface-500 text-sm">No tasks in {column.title.toLowerCase()}</p>
