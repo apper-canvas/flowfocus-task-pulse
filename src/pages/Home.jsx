@@ -297,12 +297,12 @@ className="pl-10 pr-4 py-2 w-64 lg:w-80 bg-surface-100/50 dark:bg-surface-700/50
         {/* Main Content */}
         <main className={`pt-16 md:pt-32 lg:pt-16 transition-all duration-300 ${sidebarCollapsed ? 'lg:ml-0' : 'lg:ml-64'}`}>
           <div className="p-4 lg:p-6 max-w-7xl mx-auto">
-            <MainFeature
+<MainFeature
               tasks={filteredTasks}
               users={users}
               onCreateTask={handleCreateTask}
               onUpdateTask={handleUpdateTask}
-              onDeleteTask={handleDeleteTask}
+onDeleteTask={handleDeleteTask}
               showTaskModal={showTaskModal}
               setShowTaskModal={setShowTaskModal}
             />
