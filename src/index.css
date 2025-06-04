@@ -90,19 +90,22 @@
     z-index: 1000;
   }
 
-  /* Calendar specific styles */
+/* Calendar specific styles */
   .calendar-container .react-calendar {
     width: 100%;
     background: white;
     border: 1px solid #e2e8f0;
     border-radius: 0.75rem;
     box-shadow: 0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04);
+    font-family: 'Inter', ui-sans-serif, system-ui;
   }
 
   .calendar-container .react-calendar__navigation {
     display: flex;
-    height: 3rem;
+    height: 3.5rem;
     margin-bottom: 1rem;
+    padding: 0 1rem;
+    border-bottom: 1px solid #e2e8f0;
   }
 
   .calendar-container .react-calendar__navigation button {
@@ -112,11 +115,20 @@
     background: none;
     border: none;
     cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
   }
 
-  .calendar-container .react-calendar__navigation button:hover {
+  .calendar-container .react-calendar__navigation button:enabled:hover,
+  .calendar-container .react-calendar__navigation button:enabled:focus {
     background-color: #f1f5f9;
-    border-radius: 0.5rem;
+    color: #4f46e5;
+  }
+
+  .calendar-container .react-calendar__navigation button:disabled {
+    background-color: transparent;
+    color: #cbd5e1;
   }
 
   .calendar-container .react-calendar__month-view__weekdays {
@@ -125,6 +137,12 @@
     font-weight: 600;
     font-size: 0.75rem;
     color: #64748b;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .calendar-container .react-calendar__month-view__weekdays__weekday {
+    padding: 0.5rem;
   }
 
   .calendar-container .react-calendar__tile {
@@ -137,51 +155,105 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 3rem;
+    min-height: 4rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    color: #334155;
   }
 
-  .calendar-container .react-calendar__tile:hover {
-    background-color: #f1f5f9;
-    border-radius: 0.5rem;
+  .calendar-container .react-calendar__tile:enabled:hover,
+  .calendar-container .react-calendar__tile:enabled:focus {
+    background-color: #f8fafc;
+    transform: scale(1.02);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
   .calendar-container .react-calendar__tile--active {
     background: #6366F1 !important;
-    color: white;
-    border-radius: 0.5rem;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    transform: scale(1.05);
   }
 
   .calendar-container .react-calendar__tile--now {
-    background: #10B981;
-    color: white;
-    border-radius: 0.5rem;
+    background: linear-gradient(135deg, #10B981, #059669) !important;
+    color: white !important;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  }
+
+  .calendar-container .react-calendar__tile--neighboringMonth {
+    color: #cbd5e1;
+  }
+
+  .calendar-container .react-calendar__tile--hasActive {
+    background: #eef2ff;
   }
 
   .calendar-task-indicators {
     display: flex;
-    gap: 2px;
-    margin-top: 2px;
+    gap: 3px;
+    margin-top: 4px;
     flex-wrap: wrap;
     justify-content: center;
+    max-width: 100%;
   }
 
   .calendar-task-dot {
-    width: 4px;
-    height: 4px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     display: inline-block;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    animation: pulse 2s infinite;
   }
 
   .calendar-task-dot.high {
-    background-color: #EF4444;
+    background: linear-gradient(135deg, #EF4444, #DC2626);
   }
 
   .calendar-task-dot.medium {
-    background-color: #F59E0B;
+    background: linear-gradient(135deg, #F59E0B, #D97706);
   }
 
   .calendar-task-dot.low {
-    background-color: #10B981;
+    background: linear-gradient(135deg, #10B981, #059669);
+  }
+
+  .calendar-task-overflow {
+    font-size: 0.625rem;
+    color: #6366F1;
+    font-weight: 600;
+    margin-top: 2px;
+  }
+
+  /* Calendar responsive design */
+  @media (max-width: 768px) {
+    .calendar-container .react-calendar__tile {
+      min-height: 3rem;
+      padding: 0.5rem 0.25rem;
+    }
+
+    .calendar-task-dot {
+      width: 4px;
+      height: 4px;
+    }
+
+    .calendar-container .react-calendar__navigation {
+      height: 3rem;
+      padding: 0 0.5rem;
+    }
+  }
+
+  /* Calendar animation for task dots */
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
   }
 }
 

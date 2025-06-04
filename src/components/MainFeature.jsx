@@ -524,13 +524,12 @@ const sortTasks = (tasksToSort) => {
         </motion.div>
       </div>
     )
+)
 }
 
-  // List View
-  if (typeof listView !== 'undefined' && listView) {
-    const sortedTasks = sortTasks(tasks || [])
-    
-    return (
+  // List View (commented out since listView prop is not available)
+  // if (typeof listView !== 'undefined' && listView) {
+  //   const sortedTasks = sortTasks(tasks || [])
       <div className="space-y-6">
         {/* Welcome Section */}
         <motion.div 
@@ -813,10 +812,10 @@ const sortTasks = (tasksToSort) => {
               <p className="text-surface-500">Create your first task to get started!</p>
             </motion.div>
           )}
-        </motion.div>
+</motion.div>
       </div>
     )
-  }
+  // }
 
   if (calendarView) {
     return (
@@ -855,12 +854,16 @@ const sortTasks = (tasksToSort) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-          <div className="calendar-container">
+<div className="calendar-container">
             <Calendar
               onChange={handleDateClick}
               value={selectedDate}
               tileContent={getTileContent}
               className="w-full"
+              locale="en-US"
+              showNeighboringMonth={false}
+              prev2Label={null}
+              next2Label={null}
             />
           </div>
           
