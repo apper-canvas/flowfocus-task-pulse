@@ -192,20 +192,17 @@ const handleRemoveTag = (tagToRemove) => {
       setShowDateTasks(true)
     }
   }
-
-  const handleSort = (field) => {
+const handleSort = (field) => {
     if (sortField === field) {
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
-setSortField(field)
+    } else {
+      setSortField(field)
       setSortDirection('asc')
     }
   }
-
-  const sortTasks = (tasksToSort) => {
+const sortTasks = (tasksToSort) => {
     return [...tasksToSort].sort((a, b) => {
       let aValue, bValue
-      let aValue, bValue
-      
       switch (sortField) {
         case 'title':
           aValue = (a?.title || '').toLowerCase()
@@ -502,7 +499,7 @@ setSortField(field)
                             >
                               <ApperIcon name="Trash2" className="w-4 h-4 text-error" />
 </button>
-                          </div>
+</div>
                         </td>
                       </motion.tr>
                     )
@@ -917,7 +914,6 @@ setSortField(field)
                   )
                 })}
               </AnimatePresence>
-
 {/* Empty State */}
               {getTasksByStatus(column.id).length === 0 && (
                 <motion.div 
