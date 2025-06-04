@@ -535,28 +535,28 @@ const sortTasks = (tasksToSort) => {
   //       <motion.div 
   //         className="bg-gradient-to-r from-primary/5 via-white to-secondary/5 rounded-2xl p-6 md:p-8 border border-surface-200/50 shadow-soft"
   //         initial={{ opacity: 0, y: 20 }}
-//         transition={{ duration: 0.5 }}
+  //         animate={{ opacity: 1, y: 0 }}
+  //         transition={{ duration: 0.5 }}
   //       >
   //         <div className="flex flex-col md:flex-row md:items-center justify-between space-y-4 md:space-y-0">
   //           <div>
-            <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-surface-800 mb-2">
-                Task List View
-              </h2>
-              <p className="text-surface-600 text-lg">
-                Simple and clean task overview. Focus on what matters most. ✨
-              </p>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="bg-white rounded-xl p-4 shadow-card border border-surface-200/50">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">{tasks?.length || 0}</div>
-                  <div className="text-sm text-surface-600">Total Tasks</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
+  //             <h2 className="text-2xl md:text-3xl font-bold text-surface-800 mb-2">
+  //               Task List View
+  //             </h2>
+  //             <p className="text-surface-600 text-lg">
+  //               Simple and clean task overview. Focus on what matters most. ✨
+  //             </p>
+  //           </div>
+  //           <div className="flex items-center space-x-4">
+  //             <div className="bg-white rounded-xl p-4 shadow-card border border-surface-200/50">
+  //               <div className="text-center">
+  //                 <div className="text-2xl font-bold text-primary">{tasks?.length || 0}</div>
+  //                 <div className="text-sm text-surface-600">Total Tasks</div>
+  //               </div>
+//             </div>
+  //           </div>
+  //         </div>
+  //       </motion.div>
 
         {/* Sorting Controls */}
         <motion.div
