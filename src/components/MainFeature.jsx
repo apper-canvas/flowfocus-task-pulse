@@ -164,21 +164,24 @@ const handleRemoveTag = (tagToRemove) => {
     }) || []
   }
 
-  const getTileContent = ({ date, view }) => {
+const getTileContent = ({ date, view }) => {
     if (view === 'month') {
       const tasksForDate = getTasksForDate(date)
       if (tasksForDate.length > 0) {
         return (
           <div className="calendar-task-indicators">
-{tasksForDate.slice(0, 3).map((task, index) => (
+            {tasksForDate.slice(0, 3).map((task, index) => (
               <div
                 key={index}
                 className={`calendar-task-dot ${task.priority || 'medium'}`}
+                title={`${task.title} - ${task.priority || 'medium'} priority`}
               />
             ))}
             {tasksForDate.length > 3 && (
-              <div className="calendar-task-dot high" />
-)}
+              <div className="calendar-task-overflow">
+                +{tasksForDate.length - 3}
+              </div>
+            )}
           </div>
         )
       }
