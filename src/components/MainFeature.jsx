@@ -2,12 +2,12 @@ import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { format, isToday, isTomorrow, isThisWeek, isPast, isSameDay } from 'date-fns'
 import { toast } from 'react-toastify'
+import Calendar from 'react-calendar'
 import ApperIcon from './ApperIcon'
 
-export default function MainFeature({
 export default function MainFeature({ 
   tasks, 
-  users, 
+  users,
   onCreateTask, 
   onUpdateTask, 
   onDeleteTask, 
@@ -147,10 +147,10 @@ assignee: ''
 
   const handleTaskClick = (task) => {
     setSelectedTask(task)
-    setShowDetailPanel(true)
+setShowDetailPanel(true)
   }
 
-const handleToggleComplete = (task) => {
+  const handleToggleComplete = (task) => {
     const newStatus = task.status === 'done' ? 'to-do' : 'done'
     onUpdateTask(task.id, { status: newStatus })
   }
@@ -593,9 +593,9 @@ const handleToggleComplete = (task) => {
                   transition={{ delay: 0.5 }}
                 >
                   <div className="w-16 h-16 mx-auto mb-4 bg-surface-100 rounded-full flex items-center justify-center">
-                    <ApperIcon name={column.icon} className="w-8 h-8 text-surface-400" />
+<ApperIcon name={column.icon} className="w-8 h-8 text-surface-400" />
                   </div>
-<p className="text-surface-500 text-sm">No tasks in {column.title.toLowerCase()}</p>
+                  <p className="text-surface-500 text-sm">No tasks in {column.title.toLowerCase()}</p>
                 </motion.div>
               )}
             </div>
