@@ -162,29 +162,28 @@ export default function Home() {
                   placeholder="Search tasks..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 pr-4 py-2 w-64 lg:w-80 bg-surface-100/50 dark:bg-surface-700/50 border border-surface-200 dark:border-surface-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+className="pl-10 pr-4 py-2 w-64 lg:w-80 bg-surface-100/50 dark:bg-surface-700/50 border border-surface-200 dark:border-surface-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
                 />
               </div>
 
               {/* Quick Add Button */}
               <motion.button
-<motion.button
                 onClick={() => setShowTaskModal(true)}
                 className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors shadow-soft hover:shadow-card"
                 whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
               >
                 <ApperIcon name="Plus" className="w-4 h-4" />
                 <span className="hidden sm:inline">New Task</span>
               </motion.button>
 
               {/* Dark Mode Toggle */}
+{/* Dark Mode Toggle */}
               <button
                 onClick={() => setDarkMode(!darkMode)}
                 className="p-2 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-700 transition-colors"
               >
                 <ApperIcon name={darkMode ? "Sun" : "Moon"} className="w-5 h-5" />
-
+              </button>
               {/* User Avatar */}
               <div className="w-8 h-8 bg-gradient-to-br from-secondary to-secondary-dark rounded-full flex items-center justify-center">
                 <ApperIcon name="User" className="w-4 h-4 text-white" />
@@ -292,9 +291,10 @@ export default function Home() {
                 </div>
               </div>
             </motion.aside>
-          )}
+)}
         </AnimatePresence>
-{/* Main Content */}
+
+        {/* Main Content */}
         <main className={`pt-16 md:pt-32 lg:pt-16 transition-all duration-300 ${sidebarCollapsed ? 'lg:ml-0' : 'lg:ml-64'}`}>
           <div className="p-4 lg:p-6 max-w-7xl mx-auto">
             <MainFeature
