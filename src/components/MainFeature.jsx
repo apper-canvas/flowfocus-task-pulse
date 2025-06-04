@@ -1,9 +1,10 @@
 import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { format, isToday, isTomorrow, isThisWeek, isPast } from 'date-fns'
+import { format, isToday, isTomorrow, isThisWeek, isPast, isSameDay } from 'date-fns'
 import { toast } from 'react-toastify'
 import ApperIcon from './ApperIcon'
 
+export default function MainFeature({
 export default function MainFeature({ 
   tasks, 
   users, 
@@ -11,7 +12,8 @@ export default function MainFeature({
   onUpdateTask, 
   onDeleteTask, 
   showTaskModal, 
-  setShowTaskModal 
+  setShowTaskModal,
+  calendarView 
 }) {
   const [draggedTask, setDraggedTask] = useState(null)
   const [dragOverColumn, setDragOverColumn] = useState(null)
@@ -23,9 +25,11 @@ export default function MainFeature({
     priority: 'medium',
     dueDate: '',
     tags: [],
-    assignee: ''
+assignee: ''
   })
   const [newTag, setNewTag] = useState('')
+  const [selectedDate, setSelectedDate] = useState(new Date())
+  const [showDateTasks, setShowDateTasks] = useState(false)
   const dragCounter = useRef(0)
 
   const columns = [
@@ -146,15 +150,216 @@ export default function MainFeature({
     setShowDetailPanel(true)
   }
 
-  const handleToggleComplete = (task) => {
+const handleToggleComplete = (task) => {
     const newStatus = task.status === 'done' ? 'to-do' : 'done'
     onUpdateTask(task.id, { status: newStatus })
   }
 
+  const getTasksForDate = (date) => {
+    return tasks?.filter(task => {
+      if (!task?.dueDate) return false
+      return isSameDay(new Date(task.dueDate), date)
+    }) || []
+  }
+
+  const getTileContent = ({ date, view }) => {
+    if (view === 'month') {
+      const tasksForDate = getTasksForDate(date)
+      if (tasksForDate.length > 0) {
+        return (
+          <div className="calendar-task-indicators">
+            {tasksForDate.slice(0, 3).map((task, index) => (
+              <div
+                key={index}
+                className={`calendar-task-dot ${task.priority || 'medium'}`}
+              />
+            ))}
+            {tasksForDate.length > 3 && (
+              <div className="calendar-task-dot high" />
+            )}
+          </div>
+        )
+      }
+    }
+    return null
+  }
+
+  const handleDateClick = (date) => {
+    setSelectedDate(date)
+    const tasksForDate = getTasksForDate(date)
+    if (tasksForDate.length > 0) {
+      setShowDateTasks(true)
+    }
+  }
+
+  if (calendarView) {
+    return (
+      <div className="space-y-6">
+        {/* Welcome Section */}
+        <motion.div 
+          className="bg-gradient-to-r from-primary/5 via-white to-secondary/5 rounded-2xl p-6 md:p-8 border border-surface-200/50 shadow-soft"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="flex flex-col md:flex-row md:items-center justify-between space-y-4 md:space-y-0">
+            <div>
+              <h2 className="text-2xl md:text-3xl font-bold text-surface-800 mb-2">
+                Task Calendar View
+              </h2>
+              <p className="text-surface-600 text-lg">
+                View your tasks by deadline. Click on dates to see task details. 📅
+              </p>
+            </div>
+            <div className="flex items-center space-x-4">
+              <div className="bg-white rounded-xl p-4 shadow-card border border-surface-200/50">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-primary">{tasks?.filter(t => t?.dueDate).length || 0}</div>
+                  <div className="text-sm text-surface-600">With Deadlines</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Calendar */}
+        <motion.div
+          className="bg-white rounded-xl p-6 shadow-soft border border-surface-200/50"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          <div className="calendar-container">
+            <Calendar
+              onChange={handleDateClick}
+              value={selectedDate}
+              tileContent={getTileContent}
+              className="w-full"
+            />
+          </div>
+          
+          {/* Legend */}
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-sm">
+            <div className="flex items-center space-x-2">
+              <div className="calendar-task-dot high"></div>
+              <span className="text-surface-600">High Priority</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="calendar-task-dot medium"></div>
+              <span className="text-surface-600">Medium Priority</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="calendar-task-dot low"></div>
+              <span className="text-surface-600">Low Priority</span>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Date Tasks Modal */}
+        <AnimatePresence>
+          {showDateTasks && (
+            <>
+              <motion.div
+                className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setShowDateTasks(false)}
+              >
+                <motion.div
+                  className="glass-morphism rounded-2xl border border-surface-200/50 shadow-glass max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.9, opacity: 0 }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="p-6 md:p-8">
+                    <div className="flex items-center justify-between mb-6">
+                      <h3 className="text-2xl font-bold text-surface-800">
+                        Tasks for {format(selectedDate, 'MMMM d, yyyy')}
+                      </h3>
+                      <button
+                        onClick={() => setShowDateTasks(false)}
+                        className="p-2 rounded-lg hover:bg-surface-100 transition-colors"
+                      >
+                        <ApperIcon name="X" className="w-5 h-5 text-surface-500" />
+                      </button>
+                    </div>
+                    
+                    <div className="space-y-3">
+                      {getTasksForDate(selectedDate).map((task) => {
+                        const priority = priorityConfig[task?.priority || 'medium']
+                        const assignedUser = users?.find(u => u?.id === task?.assignee)
+                        
+                        return (
+                          <div
+                            key={task?.id}
+                            className={`bg-white border-l-4 rounded-lg p-4 shadow-task hover:shadow-task-hover transition-all cursor-pointer ${
+                              priority.color === 'error' ? 'border-l-error' :
+                              priority.color === 'accent' ? 'border-l-accent' :
+                              'border-l-secondary'
+                            }`}
+                            onClick={() => {
+                              setSelectedTask(task)
+                              setShowDateTasks(false)
+                              setShowDetailPanel(true)
+                            }}
+                          >
+                            <div className="flex items-start justify-between">
+                              <div className="flex-1 min-w-0">
+                                <h4 className={`font-medium text-surface-800 ${
+                                  task?.status === 'done' ? 'line-through opacity-60' : ''
+                                }`}>
+                                  {task?.title || 'Untitled Task'}
+                                </h4>
+                                {task?.description && (
+                                  <p className="text-sm text-surface-600 mt-1">
+                                    {task.description}
+                                  </p>
+                                )}
+                                <div className="flex items-center space-x-2 mt-2">
+                                  <span className={`px-2 py-1 rounded-full text-xs ${
+                                    task?.status === 'done' ? 'bg-secondary/10 text-secondary' :
+                                    task?.status === 'in-progress' ? 'bg-accent/10 text-accent' :
+                                    'bg-surface-100 text-surface-600'
+                                  }`}>
+                                    {task?.status?.replace('-', ' ') || 'To Do'}
+                                  </span>
+                                  <span className={`px-2 py-1 rounded-full text-xs ${
+                                    priority.color === 'error' ? 'bg-error/10 text-error' :
+                                    priority.color === 'accent' ? 'bg-accent/10 text-accent' :
+                                    'bg-secondary/10 text-secondary'
+                                  }`}>
+                                    {priority.label}
+                                  </span>
+                                </div>
+                              </div>
+                              {assignedUser && (
+                                <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center ml-4">
+                                  <span className="text-white text-xs font-medium">
+                                    {assignedUser.name?.charAt(0) || 'U'}
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                </motion.div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+      </div>
+    )
+}
+
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
-      <motion.div 
+      <motion.div
         className="bg-gradient-to-r from-primary/5 via-white to-secondary/5 rounded-2xl p-6 md:p-8 border border-surface-200/50 shadow-soft"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -390,10 +595,10 @@ export default function MainFeature({
                   <div className="w-16 h-16 mx-auto mb-4 bg-surface-100 rounded-full flex items-center justify-center">
                     <ApperIcon name={column.icon} className="w-8 h-8 text-surface-400" />
                   </div>
-                  <p className="text-surface-500 text-sm">No tasks in {column.title.toLowerCase()}</p>
+<p className="text-surface-500 text-sm">No tasks in {column.title.toLowerCase()}</p>
                 </motion.div>
               )}
-</div>
+            </div>
           </motion.div>
         ))}
       </div>

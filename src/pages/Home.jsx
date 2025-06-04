@@ -296,8 +296,8 @@ export default function Home() {
         </AnimatePresence>
 
         {/* Main Content */}
-        <main className={`pt-16 md:pt-32 lg:pt-16 transition-all duration-300 ${sidebarCollapsed ? 'lg:ml-0' : 'lg:ml-64'}`}>
-<div className="p-4 lg:p-6 max-w-7xl mx-auto">
+<main className={`pt-16 md:pt-32 lg:pt-16 transition-all duration-300 ${sidebarCollapsed ? 'lg:ml-0' : 'lg:ml-64'}`}>
+          <div className="p-4 lg:p-6 max-w-7xl mx-auto">
             <MainFeature
               tasks={filteredTasks}
               users={users}
