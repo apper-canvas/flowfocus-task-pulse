@@ -19,12 +19,22 @@ showTaskModal,
   const tableView = viewMode === 'table'
   const [draggedTask, setDraggedTask] = useState(null)
   const [dragOverColumn, setDragOverColumn] = useState(null)
-  const [selectedTask, setSelectedTask] = useState(null)
+const [selectedTask, setSelectedTask] = useState(null)
   const [showDetailPanel, setShowDetailPanel] = useState(false)
+  const [editMode, setEditMode] = useState(false)
+  const [editForm, setEditForm] = useState({
+    title: '',
+    description: '',
+    priority: 'medium',
+    dueDate: '',
+    tags: [],
+    assignee: ''
+  })
+  const [editNewTag, setEditNewTag] = useState('')
   const [sortField, setSortField] = useState('title')
   const [sortDirection, setSortDirection] = useState('asc')
   const [taskForm, setTaskForm] = useState({
-title: '',
+    title: '',
     description: '',
     priority: 'medium',
     dueDate: '',
@@ -146,11 +156,75 @@ const handleRemoveTag = (tagToRemove) => {
     setTaskForm(prev => ({
       ...prev,
       tags: prev.tags.filter(tag => tag !== tagToRemove)
-    }))
+}))
   }
+
   const handleTaskClick = (task) => {
     setSelectedTask(task)
     setShowDetailPanel(true)
+    setEditMode(false)
+  }
+
+  const handleEditClick = () => {
+    if (selectedTask) {
+      setEditForm({
+        title: selectedTask.title || '',
+        description: selectedTask.description || '',
+        priority: selectedTask.priority || 'medium',
+        dueDate: selectedTask.dueDate || '',
+        tags: selectedTask.tags || [],
+        assignee: selectedTask.assignee || ''
+      })
+      setEditMode(true)
+    }
+  }
+
+  const handleCancelEdit = () => {
+    setEditMode(false)
+    setEditNewTag('')
+    setEditForm({
+      title: '',
+      description: '',
+      priority: 'medium',
+      dueDate: '',
+      tags: [],
+      assignee: ''
+    })
+  }
+
+  const handleEditSubmit = (e) => {
+    e.preventDefault()
+    if (!editForm.title.trim()) {
+      toast.error("Task title is required")
+      return
+    }
+
+    const updatedData = {
+      ...editForm,
+      tags: editForm.tags.filter(tag => tag.trim())
+    }
+
+    onUpdateTask(selectedTask.id, updatedData)
+    setEditMode(false)
+    setSelectedTask({ ...selectedTask, ...updatedData })
+    toast.success("Task updated successfully")
+  }
+
+  const handleAddEditTag = () => {
+    if (editNewTag.trim() && !editForm.tags.includes(editNewTag.trim())) {
+      setEditForm(prev => ({
+        ...prev,
+        tags: [...prev.tags, editNewTag.trim()]
+      }))
+      setEditNewTag('')
+    }
+  }
+
+  const handleRemoveEditTag = (tagToRemove) => {
+    setEditForm(prev => ({
+      ...prev,
+      tags: prev.tags.filter(tag => tag !== tagToRemove)
+    }))
   }
 
   const handleToggleComplete = (task) => {
@@ -1231,124 +1305,288 @@ sortField === 'priority' ? 'Priority' :
                 exit={{ scale: 0.9, opacity: 0 }}
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="p-6 md:p-8">
-                  {/* Detail Header */}
-                  <div className="flex items-start justify-between mb-6">
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-2xl font-bold text-surface-800 mb-2">
-                        {selectedTask?.title || 'Task Details'}
-                      </h3>
-                      <div className="flex items-center space-x-3">
-                        <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                          selectedTask?.status === 'done' ? 'bg-secondary/10 text-secondary' :
-                          selectedTask?.status === 'in-progress' ? 'bg-accent/10 text-accent' :
-                          'bg-surface-100 text-surface-600'
-                        }`}>
-                          {selectedTask?.status?.replace('-', ' ') || 'No Status'}
-                        </span>
-                        <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                          selectedTask?.priority === 'high' ? 'bg-error/10 text-error' :
-                          selectedTask?.priority === 'medium' ? 'bg-accent/10 text-accent' :
-                          'bg-secondary/10 text-secondary'
-                        }`}>
-                          {selectedTask?.priority || 'Medium'} Priority
-                        </span>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => setShowDetailPanel(false)}
-                      className="p-2 rounded-lg hover:bg-surface-100 transition-colors"
-                    >
-                      <ApperIcon name="X" className="w-5 h-5 text-surface-500" />
-                    </button>
-                  </div>
-
-                  {/* Task Details */}
-                  <div className="space-y-6">
-                    {selectedTask?.description && (
-                      <div>
-                        <h4 className="text-lg font-semibold text-surface-800 mb-2">Description</h4>
-                        <p className="text-surface-600 leading-relaxed">{selectedTask.description}</p>
-                      </div>
-                    )}
-
-                    {selectedTask?.dueDate && (
-                      <div>
-                        <h4 className="text-lg font-semibold text-surface-800 mb-2">Due Date</h4>
-                        <p className="text-surface-600">
-                          {format(new Date(selectedTask.dueDate), 'MMMM d, yyyy')}
-                        </p>
-                      </div>
-                    )}
-
-                    {selectedTask?.tags?.length > 0 && (
-                      <div>
-                        <h4 className="text-lg font-semibold text-surface-800 mb-2">Tags</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {selectedTask.tags.map(tag => (
-                            <span
-                              key={tag}
-                              className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm"
-                            >
-                              {tag}
+<div className="p-6 md:p-8">
+                  {!editMode ? (
+                    <>
+                      {/* Detail Header */}
+                      <div className="flex items-start justify-between mb-6">
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-2xl font-bold text-surface-800 mb-2">
+                            {selectedTask?.title || 'Task Details'}
+                          </h3>
+                          <div className="flex items-center space-x-3">
+                            <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                              selectedTask?.status === 'done' ? 'bg-secondary/10 text-secondary' :
+                              selectedTask?.status === 'in-progress' ? 'bg-accent/10 text-accent' :
+                              'bg-surface-100 text-surface-600'
+                            }`}>
+                              {selectedTask?.status?.replace('-', ' ') || 'No Status'}
                             </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {selectedTask?.assignee && (
-                      <div>
-                        <h4 className="text-lg font-semibold text-surface-800 mb-2">Assigned To</h4>
-                        <div className="flex items-center space-x-3">
-                          <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
-                            <span className="text-white font-medium">
-                              {users?.find(u => u?.id === selectedTask.assignee)?.name?.charAt(0) || 'U'}
+                            <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                              selectedTask?.priority === 'high' ? 'bg-error/10 text-error' :
+                              selectedTask?.priority === 'medium' ? 'bg-accent/10 text-accent' :
+                              'bg-secondary/10 text-secondary'
+                            }`}>
+                              {selectedTask?.priority || 'Medium'} Priority
                             </span>
                           </div>
-                          <span className="text-surface-700">
-                            {users?.find(u => u?.id === selectedTask.assignee)?.name || 'Unknown User'}
-                          </span>
+                        </div>
+                        <button
+                          onClick={() => setShowDetailPanel(false)}
+                          className="p-2 rounded-lg hover:bg-surface-100 transition-colors"
+                        >
+                          <ApperIcon name="X" className="w-5 h-5 text-surface-500" />
+                        </button>
+                      </div>
+
+                      {/* Task Details */}
+                      <div className="space-y-6">
+                        {selectedTask?.description && (
+                          <div>
+                            <h4 className="text-lg font-semibold text-surface-800 mb-2">Description</h4>
+                            <p className="text-surface-600 leading-relaxed">{selectedTask.description}</p>
+                          </div>
+                        )}
+
+                        {selectedTask?.dueDate && (
+                          <div>
+                            <h4 className="text-lg font-semibold text-surface-800 mb-2">Due Date</h4>
+                            <p className="text-surface-600">
+                              {format(new Date(selectedTask.dueDate), 'MMMM d, yyyy')}
+                            </p>
+                          </div>
+                        )}
+
+                        {selectedTask?.tags?.length > 0 && (
+                          <div>
+                            <h4 className="text-lg font-semibold text-surface-800 mb-2">Tags</h4>
+                            <div className="flex flex-wrap gap-2">
+                              {selectedTask.tags.map(tag => (
+                                <span
+                                  key={tag}
+                                  className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm"
+                                >
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {selectedTask?.assignee && (
+                          <div>
+                            <h4 className="text-lg font-semibold text-surface-800 mb-2">Assigned To</h4>
+                            <div className="flex items-center space-x-3">
+                              <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
+                                <span className="text-white font-medium">
+                                  {users?.find(u => u?.id === selectedTask.assignee)?.name?.charAt(0) || 'U'}
+                                </span>
+                              </div>
+                              <span className="text-surface-700">
+                                {users?.find(u => u?.id === selectedTask.assignee)?.name || 'Unknown User'}
+                              </span>
+                            </div>
+                          </div>
+                        )}
+
+                        <div>
+                          <h4 className="text-lg font-semibold text-surface-800 mb-2">Created</h4>
+                          <p className="text-surface-600">
+                            {selectedTask?.createdAt ? 
+                              format(new Date(selectedTask.createdAt), 'MMMM d, yyyy at h:mm a') :
+                              'Unknown'
+                            }
+                          </p>
                         </div>
                       </div>
-                    )}
 
-                    <div>
-                      <h4 className="text-lg font-semibold text-surface-800 mb-2">Created</h4>
-                      <p className="text-surface-600">
-                        {selectedTask?.createdAt ? 
-                          format(new Date(selectedTask.createdAt), 'MMMM d, yyyy at h:mm a') :
-                          'Unknown'
-                        }
-                      </p>
-                    </div>
-                  </div>
+                      {/* Actions */}
+                      <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 mt-8">
+                        <button
+                          onClick={handleEditClick}
+                          className="px-6 py-3 bg-primary hover:bg-primary-dark text-white rounded-lg transition-colors font-medium"
+                        >
+                          Edit Task
+                        </button>
+                        <button
+                          onClick={() => {
+                            handleToggleComplete(selectedTask)
+                            setShowDetailPanel(false)
+                          }}
+                          className={`px-6 py-3 rounded-lg transition-colors font-medium ${
+                            selectedTask?.status === 'done'
+                              ? 'bg-surface-100 hover:bg-surface-200 text-surface-700'
+                              : 'bg-secondary hover:bg-secondary-dark text-white'
+                          }`}
+                        >
+                          {selectedTask?.status === 'done' ? 'Mark Incomplete' : 'Mark Complete'}
+                        </button>
+                        <button
+                          onClick={() => {
+                            onDeleteTask(selectedTask.id)
+                            setShowDetailPanel(false)
+                          }}
+                          className="px-6 py-3 bg-error hover:bg-error/90 text-white rounded-lg transition-colors font-medium"
+                        >
+                          Delete Task
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {/* Edit Header */}
+                      <div className="flex items-center justify-between mb-6">
+                        <h3 className="text-2xl font-bold text-surface-800">Edit Task</h3>
+                        <button
+                          onClick={() => {
+                            setShowDetailPanel(false)
+                            handleCancelEdit()
+                          }}
+                          className="p-2 rounded-lg hover:bg-surface-100 transition-colors"
+                        >
+                          <ApperIcon name="X" className="w-5 h-5 text-surface-500" />
+                        </button>
+                      </div>
 
-                  {/* Actions */}
-                  <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 mt-8">
-                    <button
-                      onClick={() => {
-                        handleToggleComplete(selectedTask)
-                        setShowDetailPanel(false)
-                      }}
-                      className={`px-6 py-3 rounded-lg transition-colors font-medium ${
-                        selectedTask?.status === 'done'
-                          ? 'bg-surface-100 hover:bg-surface-200 text-surface-700'
-                          : 'bg-secondary hover:bg-secondary-dark text-white'
-                      }`}
-                    >
-                      {selectedTask?.status === 'done' ? 'Mark Incomplete' : 'Mark Complete'}
-                    </button>
-                    <button
-                      onClick={() => {
-                        onDeleteTask(selectedTask.id)
-                        setShowDetailPanel(false)
-                      }}
-                      className="px-6 py-3 bg-error hover:bg-error/90 text-white rounded-lg transition-colors font-medium"
-                    >
-                      Delete Task
-                    </button>
-                  </div>
+                      {/* Edit Form */}
+                      <form onSubmit={handleEditSubmit} className="space-y-6">
+                        {/* Title */}
+                        <div>
+                          <label className="block text-sm font-medium text-surface-700 mb-2">
+                            Task Title *
+                          </label>
+                          <input
+                            type="text"
+                            value={editForm.title}
+                            onChange={(e) => setEditForm(prev => ({ ...prev, title: e.target.value }))}
+                            className="w-full p-3 border border-surface-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                            placeholder="Enter task title..."
+                            required
+                          />
+                        </div>
+
+                        {/* Description */}
+                        <div>
+                          <label className="block text-sm font-medium text-surface-700 mb-2">
+                            Description
+                          </label>
+                          <textarea
+                            value={editForm.description}
+                            onChange={(e) => setEditForm(prev => ({ ...prev, description: e.target.value }))}
+                            className="w-full p-3 border border-surface-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all h-24 resize-none"
+                            placeholder="Describe your task..."
+                          />
+                        </div>
+
+                        {/* Priority and Due Date */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-surface-700 mb-2">
+                              Priority
+                            </label>
+                            <select
+                              value={editForm.priority}
+                              onChange={(e) => setEditForm(prev => ({ ...prev, priority: e.target.value }))}
+                              className="w-full p-3 border border-surface-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                            >
+                              <option value="low">Low Priority</option>
+                              <option value="medium">Medium Priority</option>
+                              <option value="high">High Priority</option>
+                            </select>
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-medium text-surface-700 mb-2">
+                              Due Date
+                            </label>
+                            <input
+                              type="date"
+                              value={editForm.dueDate}
+                              onChange={(e) => setEditForm(prev => ({ ...prev, dueDate: e.target.value }))}
+                              className="w-full p-3 border border-surface-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                            />
+                          </div>
+                        </div>
+
+                        {/* Assignee */}
+                        <div>
+                          <label className="block text-sm font-medium text-surface-700 mb-2">
+                            Assign To
+                          </label>
+                          <select
+                            value={editForm.assignee}
+                            onChange={(e) => setEditForm(prev => ({ ...prev, assignee: e.target.value }))}
+                            className="w-full p-3 border border-surface-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                          >
+                            <option value="">Unassigned</option>
+                            {users?.map(user => (
+                              <option key={user?.id} value={user?.id}>
+                                {user?.name || 'Unknown User'}
+                              </option>
+                            )) || []}
+                          </select>
+                        </div>
+
+                        {/* Tags */}
+                        <div>
+                          <label className="block text-sm font-medium text-surface-700 mb-2">
+                            Tags
+                          </label>
+                          <div className="flex flex-wrap gap-2 mb-3">
+                            {editForm.tags?.map(tag => (
+                              <span
+                                key={tag}
+                                className="inline-flex items-center space-x-2 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm"
+                              >
+                                <span>{tag}</span>
+                                <button
+                                  type="button"
+                                  onClick={() => handleRemoveEditTag(tag)}
+                                  className="hover:text-error transition-colors"
+                                >
+                                  <ApperIcon name="X" className="w-3 h-3" />
+                                </button>
+                              </span>
+                            )) || []}
+                          </div>
+                          <div className="flex space-x-2">
+                            <input
+                              type="text"
+                              value={editNewTag}
+                              onChange={(e) => setEditNewTag(e.target.value)}
+                              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddEditTag())}
+                              className="flex-1 p-3 border border-surface-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                              placeholder="Add a tag..."
+                            />
+                            <button
+                              type="button"
+                              onClick={handleAddEditTag}
+                              className="px-4 py-3 bg-surface-100 hover:bg-surface-200 text-surface-700 rounded-lg transition-colors"
+                            >
+                              <ApperIcon name="Plus" className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Form Actions */}
+                        <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 mt-8">
+                          <button
+                            type="button"
+                            onClick={handleCancelEdit}
+                            className="px-6 py-3 border border-surface-200 text-surface-700 rounded-lg hover:bg-surface-50 transition-colors font-medium"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="submit"
+                            className="px-6 py-3 bg-primary hover:bg-primary-dark text-white rounded-lg transition-colors font-medium shadow-soft hover:shadow-card"
+                          >
+                            Save Changes
+                          </button>
+                        </div>
+                      </form>
+                    </>
+                  )}
                 </div>
               </motion.div>
             </motion.div>
