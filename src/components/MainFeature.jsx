@@ -157,42 +157,67 @@ const handleRemoveTag = (tagToRemove) => {
     const newStatus = task.status === 'done' ? 'to-do' : 'done'
     onUpdateTask(task.id, { status: newStatus })
   }
-  const getTasksForDate = (date) => {
-    return tasks?.filter(task => {
+const getTasksForDate = (date) => {
+    if (!tasks || !Array.isArray(tasks)) return []
+    
+    return tasks.filter(task => {
       if (!task?.dueDate) return false
-      return isSameDay(new Date(task.dueDate), date)
-    }) || []
+      
+      try {
+        // Handle various date formats and ensure proper parsing
+        const taskDate = new Date(task.dueDate)
+        
+        // Check if the date is valid
+        if (isNaN(taskDate.getTime())) return false
+        
+        // Use isSameDay for accurate date comparison
+        return isSameDay(taskDate, date)
+      } catch (error) {
+        console.warn('Error parsing task due date:', task.dueDate, error)
+        return false
+      }
+    })
   }
 
 const getTileContent = ({ date, view }) => {
-    if (view === 'month') {
+    if (view !== 'month') return null
+    
+    try {
       const tasksForDate = getTasksForDate(date)
-      if (tasksForDate.length > 0) {
-        return (
-          <div className="calendar-task-indicators">
-            {tasksForDate.slice(0, 4).map((task, index) => (
+      
+      if (!tasksForDate || tasksForDate.length === 0) return null
+      
+      return (
+        <div className="calendar-task-indicators">
+          {tasksForDate.slice(0, 4).map((task, index) => {
+            const priority = task?.priority || 'medium'
+            const title = task?.title || 'Untitled Task'
+            
+            return (
               <div
-                key={`${task.id}-${index}-${date.getTime()}`}
-                className={`calendar-task-dot ${task.priority || 'medium'}`}
-                title={`${task.title || 'Untitled Task'} - ${(task.priority || 'medium').charAt(0).toUpperCase() + (task.priority || 'medium').slice(1)} Priority`}
+                key={`task-${task?.id || index}-${date.getTime()}`}
+                className={`calendar-task-dot ${priority}`}
+                title={`${title} - ${priority.charAt(0).toUpperCase() + priority.slice(1)} Priority`}
                 style={{
                   animationDelay: `${index * 0.1}s`
                 }}
               />
-            ))}
-            {tasksForDate.length > 4 && (
-              <div 
-                className="calendar-task-overflow"
-                title={`${tasksForDate.length} tasks total`}
-              >
-                +{tasksForDate.length - 4}
-              </div>
-            )}
-          </div>
-        )
-      }
+            )
+          })}
+          {tasksForDate.length > 4 && (
+            <div 
+              className="calendar-task-overflow"
+              title={`${tasksForDate.length} total tasks on this date`}
+            >
+              +{tasksForDate.length - 4}
+            </div>
+          )}
+        </div>
+      )
+    } catch (error) {
+      console.warn('Error rendering calendar tile content:', error)
+      return null
     }
-    return null
   }
 
   const handleDateClick = (date) => {
