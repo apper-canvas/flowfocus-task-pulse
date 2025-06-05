@@ -995,16 +995,16 @@ sortField === 'priority' ? 'Priority' :
                         )}
                       </div>
 
-                      {/* Quick Actions (on hover) */}
+{/* Quick Actions (on hover) */}
                       <div className="opacity-0 group-hover:opacity-100 transition-opacity mt-3 flex items-center justify-end space-x-2">
                         <button
-<button
                           onClick={(e) => {
                             e.stopPropagation()
                             handleTaskClick(task)
                           }}
                           className="p-1 rounded hover:bg-surface-100 transition-colors"
                         >
+                          <ApperIcon name="Edit" className="w-3 h-3 text-surface-600" />
                         </button>
                         <button
                           onClick={(e) => {
