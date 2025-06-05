@@ -401,10 +401,10 @@ const sortTasks = (tasksToSort) => {
                   {sortedTasks.map((task, index) => {
                     const dueInfo = formatDueDate(task?.dueDate)
                     const priority = priorityConfig[task?.priority || 'medium']
-                    const assignedUser = users?.find(u => u?.id === task?.assignee)
+const assignedUser = users?.find(u => u?.id === task?.assignee)
                     
                     return (
-<motion.tr
+                      <motion.tr
                         key={task?.id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -511,10 +511,10 @@ const sortTasks = (tasksToSort) => {
                                 </span>
                               </div>
                               <span className="text-sm text-surface-700">{assignedUser.name}</span>
-                            </div>
+</div>
                           ) : (
                             <span className="text-sm text-surface-400">Unassigned</span>
-)}
+                          )}
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex items-center justify-end space-x-2">
@@ -545,18 +545,18 @@ const sortTasks = (tasksToSort) => {
                   })}
                 </AnimatePresence>
               </tbody>
-            </table>
+</table>
             
-{/* Empty State */}
+            {/* Empty State */}
             {(!tasks || tasks.length === 0) && (
               <div className="text-center py-12">
                 <div className="w-16 h-16 mx-auto mb-4 bg-surface-100 rounded-full flex items-center justify-center">
                   <ApperIcon name="Table" className="w-8 h-8 text-surface-400" />
                 </div>
                 <p className="text-surface-500">No tasks found</p>
-              </div>
-            )}
 </div>
+            )}
+          </div>
         </motion.div>
       </div>
     )
@@ -588,9 +588,9 @@ const sortTasks = (tasksToSort) => {
                   <div className="text-sm text-surface-600">With Deadlines</div>
                 </div>
               </div>
-            </div>
+</div>
           </div>
-</motion.div>
+        </motion.div>
 
         {/* Calendar */}
         <motion.div
@@ -599,9 +599,9 @@ const sortTasks = (tasksToSort) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-          <div className="calendar-container">
+<div className="calendar-container">
             <Calendar
-onChange={handleDateClick}
+              onChange={handleDateClick}
               value={selectedDate}
               tileContent={getTileContent}
               className="w-full block"
@@ -701,10 +701,10 @@ onChange={handleDateClick}
                                   <span className={`px-2 py-1 rounded-full text-xs ${
                                     priority.color === 'error' ? 'bg-error/10 text-error' :
                                     priority.color === 'accent' ? 'bg-accent/10 text-accent' :
-                                    'bg-secondary/10 text-secondary'
+'bg-secondary/10 text-secondary'
                                   }`}>
                                     {priority.label}
-</span>
+                                  </span>
                                 </div>
                               </div>
                               {assignedUser && (
@@ -749,9 +749,9 @@ onChange={handleDateClick}
             </p>
           </div>
           <div className="flex items-center space-x-4">
-            <div className="bg-white rounded-xl p-4 shadow-card border border-surface-200/50">
+<div className="bg-white rounded-xl p-4 shadow-card border border-surface-200/50">
               <div className="text-center">
-<div className="text-2xl font-bold text-primary">{tasks?.filter(t => t?.status === 'done').length || 0}</div>
+                <div className="text-2xl font-bold text-primary">{tasks?.filter(t => t?.status === 'done').length || 0}</div>
                 <div className="text-sm text-surface-600">Completed</div>
               </div>
             </div>
@@ -815,9 +815,9 @@ onChange={handleDateClick}
             <span>Sorting by:</span>
             <span className="font-medium text-primary">
               {sortField === 'title' ? 'Alphabetical' :
-               sortField === 'priority' ? 'Priority' :
+sortField === 'priority' ? 'Priority' :
                sortField === 'dueDate' ? 'Due Date' :
-sortField === 'createdAt' ? 'Creation Date' :
+               sortField === 'createdAt' ? 'Creation Date' :
                sortField === 'status' ? 'Status' :
                'Assignee'}
             </span>
@@ -866,10 +866,10 @@ sortField === 'createdAt' ? 'Creation Date' :
                     />
                   </div>
                   <h3 className="font-semibold text-surface-800">{column.title}</h3>
-                </div>
+</div>
                 <div className={`px-2 py-1 rounded-full text-xs font-medium ${
                   column.color === 'surface' ? 'bg-surface-100 text-surface-700' :
-column.color === 'accent' ? 'bg-accent/10 text-accent' :
+                  column.color === 'accent' ? 'bg-accent/10 text-accent' :
                   'bg-secondary/10 text-secondary'
                 }`}>
                   {getTasksByStatus(column.id).length}
@@ -998,13 +998,13 @@ column.color === 'accent' ? 'bg-accent/10 text-accent' :
                       {/* Quick Actions (on hover) */}
                       <div className="opacity-0 group-hover:opacity-100 transition-opacity mt-3 flex items-center justify-end space-x-2">
                         <button
+<button
                           onClick={(e) => {
                             e.stopPropagation()
-handleTaskClick(task)
+                            handleTaskClick(task)
                           }}
                           className="p-1 rounded hover:bg-surface-100 transition-colors"
                         >
-                          <ApperIcon name="Edit" className="w-3 h-3 text-surface-500" />
                         </button>
                         <button
                           onClick={(e) => {
@@ -1020,9 +1020,8 @@ handleTaskClick(task)
                   )
                 })}
               </AnimatePresence>
-
-              {/* Empty State */}
-{getTasksByStatus(column.id).length === 0 && (
+{/* Empty State */}
+              {getTasksByStatus(column.id).length === 0 && (
                 <motion.div 
                   className="text-center py-8"
                   initial={{ opacity: 0 }}
