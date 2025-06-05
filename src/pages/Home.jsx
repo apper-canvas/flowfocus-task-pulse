@@ -342,11 +342,20 @@ Filters
                   </div>
                 </div>
 
-                {/* Projects */}
+{/* Projects */}
                 <div>
-                  <h3 className="text-sm font-semibold text-surface-700 dark:text-surface-300 mb-3 uppercase tracking-wider">
-                    Projects
-                  </h3>
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-semibold text-surface-700 dark:text-surface-300 uppercase tracking-wider">
+                      Projects
+                    </h3>
+                    <button
+                      onClick={() => window.location.href = '/projects/new'}
+                      className="p-1 text-primary hover:text-primary-dark transition-colors"
+                      title="Create New Project"
+                    >
+                      <ApperIcon name="Plus" className="w-4 h-4" />
+                    </button>
+                  </div>
                   <div className="space-y-2">
                     {projects?.slice(0, 5).map(project => (
                       <div key={project?.id} className="flex items-center space-x-3 p-2 rounded-lg hover:bg-surface-100/50 dark:hover:bg-surface-700/50 cursor-pointer transition-colors">
@@ -358,7 +367,6 @@ Filters
                     )) || []}
                   </div>
                 </div>
-
                 {/* Stats */}
                 <div>
                   <h3 className="text-sm font-semibold text-surface-700 dark:text-surface-300 mb-3 uppercase tracking-wider">
