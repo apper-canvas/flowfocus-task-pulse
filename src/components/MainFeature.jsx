@@ -172,13 +172,19 @@ const getTileContent = ({ date, view }) => {
           <div className="calendar-task-indicators">
             {tasksForDate.slice(0, 4).map((task, index) => (
               <div
-                key={`${task.id}-${index}`}
+                key={`${task.id}-${index}-${date.getTime()}`}
                 className={`calendar-task-dot ${task.priority || 'medium'}`}
-                title={`${task.title || 'Untitled'} - ${task.priority || 'medium'} priority`}
+                title={`${task.title || 'Untitled Task'} - ${(task.priority || 'medium').charAt(0).toUpperCase() + (task.priority || 'medium').slice(1)} Priority`}
+                style={{
+                  animationDelay: `${index * 0.1}s`
+                }}
               />
             ))}
             {tasksForDate.length > 4 && (
-              <div className="calendar-task-overflow">
+              <div 
+                className="calendar-task-overflow"
+                title={`${tasksForDate.length} tasks total`}
+              >
                 +{tasksForDate.length - 4}
               </div>
             )}
