@@ -407,7 +407,7 @@ const assignedUser = users?.find(u => u?.id === task?.assignee)
                       <motion.tr
                         key={task?.id}
                         initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
+animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
                         transition={{ duration: 0.2, delay: index * 0.05 }}
                         className="hover:bg-surface-50 transition-colors cursor-pointer group"
