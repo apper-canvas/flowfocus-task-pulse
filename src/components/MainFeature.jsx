@@ -1451,7 +1451,7 @@ sortField === 'priority' ? 'Priority' :
                       {/* Edit Form */}
                       <form onSubmit={handleEditSubmit} className="space-y-6">
                         {/* Title */}
-                        <div>
+<div>
                           <label className="block text-sm font-medium text-surface-700 mb-2">
                             Task Title *
                           </label>
@@ -1461,6 +1461,7 @@ sortField === 'priority' ? 'Priority' :
                             onChange={(e) => setEditForm(prev => ({ ...prev, title: e.target.value }))}
                             className="w-full p-3 border border-surface-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
                             placeholder="Enter task title..."
+                            autoFocus
                             required
                           />
                         </div>
